@@ -1,2 +1,2 @@
 # Breakout
-A small breakout clone made from scratch (and SDL) in C++ 
+A small breakout clone made using SDL3 and C++ 
