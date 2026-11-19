@@ -55,7 +55,7 @@ void Engine::Render()
 
     // render objects here
 
-    SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE)
+    SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     // 255, 255, 255 sets the color to white
     SDL_RenderDebugText(mRenderer, 0, 0, "testing 1 2 3"); // temporary for testing
 
