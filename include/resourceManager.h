@@ -13,8 +13,13 @@ class ResourceManager
     ResourceManager(SDL_Renderer* renderer, const char* filepath);
     ~ResourceManager();
 
+    ResourceManager(const ResourceManager&) = delete;
+    ResourceManager& operator=(const ResourceManager&) = delete;
+    // no copying resource manager
+    // i don't foresee myself accidentally copying it but you can never be too safe
+
     private:
-    std::unordered_map<std::string, std::string> mLevelPaths;
+    std::vector<std::string> mLevelPaths;
     std::unordered_map<std::string, SDL_Texture*> mSprites;
     // audio files
 };
