@@ -1,11 +1,8 @@
 {
     "levels" : {
-
+        "testlevel" : "resources/levels/testlevel.json"
     },
     "sprites" : {
-
-    },
-    "sfx" : {
-
+        "paddle" : "resources/sprites/paddle.bmp"
     }
 }
