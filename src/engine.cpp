@@ -25,8 +25,6 @@ void Engine::Run()
         Input();
         Update();
         Render();
-
-        SDL_Delay(5000);
     }
 }
 
