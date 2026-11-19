@@ -38,7 +38,7 @@ void Engine::Input()
 
         switch (event.type)
         {
-        case SDL_QUIT:
+        case SDL_EVENT_QUIT:
             mRunning = false;
             break;
         
