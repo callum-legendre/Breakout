@@ -3,6 +3,11 @@
 
 struct SDL_FRect;
 struct Vector2;
+class Component;
+
+#include <unordered_map>
+#include <typeindex>
+#include <memory>
 
 class GameObject
 {
@@ -18,13 +23,37 @@ class GameObject
     void SetPosition(Vector2 newPos);
     void MovePosition(Vector2 direction);
 
-    // templated get and set component functions will go here once componentns are done
+    // -- component functions --
+    template <typename ComponentType>
+    ComponentType* GetComponent()
+    {
+        if (HasComponent<ComponentType>()){
+            return static_cast<ComponentType*>(mComponents.at(typeid(ComponentType)));
+        }
+        else {
+            return nullptr;
+        }
+    }
+
+    template <typename ComponentType>
+    bool HasComponent()
+    {
+        return mComponents.contains(typeid(ComponentType))
+    }
+
+    template <typename ComponentType, typename... Args>
+    void AddComponent(Args&&... args)
+    {
+        // overwrites the index if there a component there already
+        // this is intended, each object should only have one of each component, and the other functions are built on this assumption
+        mComponents[typeid(ComponentType)] = std::make_unique<ComponentType>(std::forward<Args>(args));
+    }
 
     // same as above with scripts
 
     private:
     SDL_FRect mTransform;
-    // unordered map of components
+    std::unordered_map<std::type_index, std::unique_ptr<Component>> mComponents;
     // unordered map of scripts
 };
 
