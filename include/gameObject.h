@@ -46,7 +46,8 @@ class GameObject
     void AddComponent(Args&&... args)
     {
         // overwrites the index if there a component there already
-        // this is intended, each object should only have one of any component, and the other functions are built on this assumption
+        // this is intended, each object should only have one of any component, 
+        // and the other functions are built on this assumption
         mComponents[typeid(ComponentType)] = std::make_unique<ComponentType>(std::forward<Args>(args));
     }
 
@@ -72,7 +73,8 @@ class GameObject
     void AddScript(Args&&... args)
     {
         // overwrites the index if there a component there already
-        // this is intended, each object should only have one of any script, and the other functions are built on this assumption
+        // this is intended, each object should only have one of any script, 
+        // and the other functions are built on this assumption
         mScripts[typeid(ScriptType)] = std::make_unique<ScriptType>(std::forward<Args>(args));
     }
 
