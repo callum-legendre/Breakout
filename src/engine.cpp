@@ -17,8 +17,11 @@ Engine::~Engine()
 
 void Engine::Run()
 {
-    while (true){
-        
+    mRunning = true;
+
+    while (mRunning = true){
+        std::sleep(10);
+        mRunning = false;
     }
 }
 

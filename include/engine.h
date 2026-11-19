@@ -11,8 +11,13 @@ class Engine
         void Run();
 
     private:
+
+    // -- sdl referenes --
     SDL_Renderer* mRender = nullptr;
     SDL_Window* mWindow = nullptr;
+
+    // -- engine propoerties -- 
+    bool mRunning = false;
 };
 
 #endif
