@@ -2,7 +2,7 @@
 #define ENGINE_H
 
 #include <SDL3/SDL.h>
-
+class ResourceManager;
 
 class Engine
 {
@@ -20,11 +20,12 @@ class Engine
     void Render();
 
     // -- sdl referenes --
-    SDL_Renderer* mRenderer = nullptr;
-    SDL_Window* mWindow = nullptr;
+    SDL_Renderer& mRenderer = nullptr;
+    SDL_Window& mWindow = nullptr;
 
     // -- engine propoerties -- 
     bool mRunning = false;
+    ResourceManager& mResourceManager = nullptr;
 };
 
 #endif

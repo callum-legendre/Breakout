@@ -1,16 +1,22 @@
 #include "engine.h"
 #include <iostream>
 
+#include "resourceManager.h"
+
 
 Engine::Engine()
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO); // can move init into main if we get strange segfaults
     mWindow = SDL_CreateWindow("Breakout", 640, 480, SDL_WINDOW_ALWAYS_ON_TOP);
     mRenderer = SDL_CreateRenderer(mWindow, nullptr);
+
+    mResourceManager = new ResourceManager("resources.json");
 }
 
 Engine::~Engine()
 {
+    delete mResourceManager;
+    
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
