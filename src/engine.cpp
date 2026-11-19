@@ -1,5 +1,6 @@
-#include <SDL3/SDL.h>
 #include "engine.h"
+#include <iostream>
+
 
 Engine::Engine()
 {
@@ -19,8 +20,8 @@ void Engine::Run()
 {
     mRunning = true;
 
-    while (mRunning = true){
-        std::sleep(10);
+    while (mRunning == true){
+        SDL_Delay(5000);
         mRunning = false;
     }
 }

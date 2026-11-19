@@ -1,6 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#include <SDL3/SDL.h>
 
 
 class Engine
