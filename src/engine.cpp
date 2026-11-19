@@ -10,13 +10,13 @@ Engine::Engine()
     mWindow = SDL_CreateWindow("Breakout", 640, 480, SDL_WINDOW_ALWAYS_ON_TOP);
     mRenderer = SDL_CreateRenderer(mWindow, nullptr);
 
-    mResourceManager = new ResourceManager("resources.json");
+    mResourceManager = new ResourceManager(mRenderer, "resources.json");
 }
 
 Engine::~Engine()
 {
     delete mResourceManager;
-    
+
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();

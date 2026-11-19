@@ -20,12 +20,12 @@ class Engine
     void Render();
 
     // -- sdl referenes --
-    SDL_Renderer& mRenderer = nullptr;
-    SDL_Window& mWindow = nullptr;
+    SDL_Renderer* mRenderer;
+    SDL_Window* mWindow;
 
     // -- engine propoerties -- 
     bool mRunning = false;
-    ResourceManager& mResourceManager = nullptr;
+    ResourceManager* mResourceManager;
 };
 
 #endif
