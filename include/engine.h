@@ -11,10 +11,16 @@ class Engine
         ~Engine();
         void Run();
 
+
     private:
+    
+    // -- frame loop functions --
+    void Input();
+    void Update();
+    void Render();
 
     // -- sdl referenes --
-    SDL_Renderer* mRender = nullptr;
+    SDL_Renderer* mRenderer = nullptr;
     SDL_Window* mWindow = nullptr;
 
     // -- engine propoerties -- 
