@@ -18,6 +18,8 @@ class ResourceManager
     // no copying resource manager
     // i don't foresee myself accidentally copying it but you can never be too safe
 
+    std::string GetLevelPath(int levelNumber);
+
     private:
     std::vector<std::string> mLevelPaths;
     std::unordered_map<std::string, SDL_Texture*> mSprites;

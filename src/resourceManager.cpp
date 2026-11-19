@@ -38,3 +38,8 @@ ResourceManager::~ResourceManager()
         SDL_DestroyTexture(spriteTexture);
     }
 }
+
+std::string ResourceManager::GetLevelPath(int levelNumber)
+{
+    return mLevelPaths[levelNumber];
+}
