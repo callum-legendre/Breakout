@@ -10,9 +10,9 @@ class ResourceManager;
 class Engine
 {
     public:
-        Engine();
-        ~Engine();
-        void Run();
+    Engine();
+    ~Engine();
+    void Run();
 
 
     private:
