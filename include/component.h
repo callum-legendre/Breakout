@@ -4,6 +4,6 @@
 class Component
 {
 
-}
+};
 
 #endif
