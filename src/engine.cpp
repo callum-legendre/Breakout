@@ -36,7 +36,15 @@ void Engine::Input()
 
     while(SDL_PollEvent(&event)){
 
-        // event polling that we want to do will go in here
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            mRunning = false;
+            break;
+        
+        default:
+            break;
+        }
     }
 }
 
