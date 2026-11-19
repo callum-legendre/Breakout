@@ -30,3 +30,11 @@ ResourceManager::ResourceManager(const char* filepath)
 
     // TODO audio files
 }
+
+ResourceManager::~ResourceManager()
+{
+    for (const auto& [spriteName, spriteTexture] : mSprites){
+
+        SDL_DestroyTexture(spriteTexture);
+    }
+}

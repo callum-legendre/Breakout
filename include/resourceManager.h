@@ -16,8 +16,8 @@ class ResourceManager
     ~ResourceManager();
 
     private:
-    unordered_map<std::string, std::string> mLevelPaths;
-    unordered_map<std::string, SDL_Texture*> mSprites;
+    std::unordered_map<std::string, std::string> mLevelPaths;
+    std::unordered_map<std::string, SDL_Texture*> mSprites;
     // audio files
 };
 
