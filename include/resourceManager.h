@@ -1,18 +1,16 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
-class unordered_map;
-namespace std
-{
-    class string;
+#include <string>
+#include <unordered_map>
 
-}
 struct SDL_Texture;
+struct SDL_Renderer;
 
 class ResourceManager
 {
     public:
-    ResourceManager(const char* filepath);
+    ResourceManager(SDL_Renderer* renderer, const char* filepath);
     ~ResourceManager();
 
     private:
