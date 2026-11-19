@@ -13,7 +13,7 @@ ResourceManager::ResourceManager(SDL_Renderer* renderer, const char* filepath)
 
     // get the levels
     for (const auto& [lvlName, lvlPath] : resources.at("levels").items()){
-        mLevelPaths[lvlName] = lvlPath;
+        mLevelPaths.push_back(lvlPath);
     }
 
     // get the sprites
@@ -37,4 +37,9 @@ ResourceManager::~ResourceManager()
 
         SDL_DestroyTexture(spriteTexture);
     }
+}
+
+std::string ResourceManager::GetLevelPath(int levelNumber)
+{
+    return mLevelPaths[levelNumber];
 }
