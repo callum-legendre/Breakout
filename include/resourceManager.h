@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 struct SDL_Texture;
 struct SDL_Renderer;

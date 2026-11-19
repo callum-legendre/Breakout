@@ -6,6 +6,7 @@
 #include <memory>
 #include <SDL3/SDL.h>
 class ResourceManager;
+class GameObject;
 
 class Engine
 {
@@ -35,9 +36,9 @@ class Engine
     // -- level properties and methods -- 
     void LoadLevel();
     size_t mCurrentLevelNum = 0;
-    std::vector<std::vector<unique_ptr<GameObject>>> mCurrentLevelBlocks;
-    // GameObject* mPaddle;
-    // GameObject* mBall;
+    std::vector<std::vector<std::unique_ptr<GameObject>>> mCurrentLevelBlocks;
+    std::unique_ptr<GameObject> mPaddle;
+    std::unique_ptr<GameObject> mBall;
 };
 
 #endif

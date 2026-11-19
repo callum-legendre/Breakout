@@ -1,6 +1,7 @@
 #include "gameObject.h"
-
-#include <SDL3/SDL.h>
+#include "vector2.h"
+#include "component.h"
+#include "script.h"
 
 GameObject::GameObject(float xPos, float yPos, float width, float height)
 {
@@ -9,6 +10,8 @@ GameObject::GameObject(float xPos, float yPos, float width, float height)
     mTransform.w = width;
     mTransform.h = height;
 }
+
+GameObject::~GameObject() = default;
 
 SDL_FRect GameObject::GetTransform()
 {

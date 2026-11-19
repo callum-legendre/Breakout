@@ -1,6 +1,7 @@
 #include "engine.h"
 
 #include <nlohmann/json.hpp>
+#include <fstream>
 
 #include "resourceManager.h"
 #include "gameObject.h"
@@ -16,7 +17,7 @@ Engine::Engine()
 
     mResourceManager = new ResourceManager(mRenderer, "resources.json");
 
-    LoadLevel(mCurrentLevelNum);
+    LoadLevel();
 }
 
 Engine::~Engine()
@@ -92,18 +93,19 @@ void Engine::LoadLevel()
     size_t numCols = levelFile.at("columns");
 
     // create the new level grid
-    std::vector<std::vector<GameObject>> newLevel;
+    std::vector<std::vector<std::unique_ptr<GameObject>>> newLevel;
     newLevel.reserve(numRows);
     for (size_t row = 0; row < numRows; row++){
-        std::vector<GameObject> newRow;
+        std::vector<std::unique_ptr<GameObject>> newRow;
         newRow.reserve(numCols);
         for (size_t col = 0; col < numCols; col++){
-            newRow.push_back(/*mObjectFactory.CreateBlock(layoutArray[row][col])*/);
+            // newRow.push_back(/*mObjectFactory.CreateBlock(layoutArray[row][col])*/);
+            // TODO: uncomment line once factory is done
         }
-        newLevel.push_back(newColumn);
+        newLevel.push_back(std::move(newRow));
     }
 
     // assign new level grid to the current level member
-    mCurrentLevelBlocks = newLevel;
+    mCurrentLevelBlocks = std::move(newLevel);
 }
 

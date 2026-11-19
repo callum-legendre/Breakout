@@ -1,7 +1,6 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-struct SDL_FRect;
 struct Vector2;
 class Component;
 class Script;
@@ -9,18 +8,20 @@ class Script;
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <SDL3/SDL.h>
 
 class GameObject
 {
     public:
     GameObject(float xPos, float yPos, float width, float height);
-    ~GameObject() = default;
+    ~GameObject();
 
     // -- transform methods --
         // in this game it makes sense for each object to have an inherent position associated with it
         // which is why all of this in the base gameobject and not a transform component.
         // for the ease of scripting, move operations will be done using vectors that are applied to the SDL rectangle
     SDL_FRect GetTransform();
+    Vector2 GetPosition();
     void SetPosition(Vector2 newPos);
     void MovePosition(Vector2 direction);
 
@@ -39,7 +40,7 @@ class GameObject
     template <typename ComponentType>
     bool HasComponent()
     {
-        return mComponents.contains(typeid(ComponentType))
+        return mComponents.contains(typeid(ComponentType));
     }
 
     template <typename ComponentType, typename... Args>
@@ -48,7 +49,7 @@ class GameObject
         // overwrites the index if there a component there already
         // this is intended, each object should only have one of any component, 
         // and the other functions are built on this assumption
-        mComponents[typeid(ComponentType)] = std::make_unique<ComponentType>(std::forward<Args>(args));
+        mComponents[typeid(ComponentType)] = std::make_unique<ComponentType>(std::forward<Args>(args)...);
     }
 
     // -- script functions --
@@ -66,7 +67,7 @@ class GameObject
     template <typename ScriptType>
     bool HasScript()
     {
-        return mScripts.contains(typeid(ScriptType))
+        return mScripts.contains(typeid(ScriptType));
     }
 
     template <typename ScriptType, typename... Args>
@@ -75,7 +76,7 @@ class GameObject
         // overwrites the index if there a component there already
         // this is intended, each object should only have one of any script, 
         // and the other functions are built on this assumption
-        mScripts[typeid(ScriptType)] = std::make_unique<ScriptType>(std::forward<Args>(args));
+        mScripts[typeid(ScriptType)] = std::make_unique<ScriptType>(std::forward<Args>(args)...);
     }
 
     private:
