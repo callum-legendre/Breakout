@@ -4,6 +4,7 @@
 struct SDL_FRect;
 struct Vector2;
 class Component;
+class Script;
 
 #include <unordered_map>
 #include <typeindex>
@@ -45,16 +46,40 @@ class GameObject
     void AddComponent(Args&&... args)
     {
         // overwrites the index if there a component there already
-        // this is intended, each object should only have one of each component, and the other functions are built on this assumption
+        // this is intended, each object should only have one of any component, and the other functions are built on this assumption
         mComponents[typeid(ComponentType)] = std::make_unique<ComponentType>(std::forward<Args>(args));
     }
 
-    // same as above with scripts
+    // -- script functions --
+    template <typename ScriptType>
+    ScriptType* GetScript()
+    {
+        if (HasScript<ScriptType>()){
+            return static_cast<ScriptType*>(mScripts.at(typeid(ScriptType)));
+        }
+        else {
+            return nullptr;
+        }
+    }
+
+    template <typename ScriptType>
+    bool HasScript()
+    {
+        return mScripts.contains(typeid(ScriptType))
+    }
+
+    template <typename ScriptType, typename... Args>
+    void AddScript(Args&&... args)
+    {
+        // overwrites the index if there a component there already
+        // this is intended, each object should only have one of any script, and the other functions are built on this assumption
+        mScripts[typeid(ScriptType)] = std::make_unique<ScriptType>(std::forward<Args>(args));
+    }
 
     private:
     SDL_FRect mTransform;
     std::unordered_map<std::type_index, std::unique_ptr<Component>> mComponents;
-    // unordered map of scripts
+    std::unordered_map<std::type_index, std::unique_ptr<Script>> mScripts; 
 };
 
 #endif
