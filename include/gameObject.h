@@ -8,6 +8,7 @@ class Script;
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <functional>
 #include <SDL3/SDL.h>
 
 class GameObject
@@ -43,12 +44,12 @@ class GameObject
         return mComponents.contains(typeid(ComponentType));
     }
 
+    // overwrites the index if there a component there already
+    // this is intended, each object should only have one of any component, 
+    // and the other functions are built on this assumption
     template <typename ComponentType, typename... Args>
     void AddComponent(Args&&... args)
     {
-        // overwrites the index if there a component there already
-        // this is intended, each object should only have one of any component, 
-        // and the other functions are built on this assumption
         mComponents[typeid(ComponentType)] = std::make_unique<ComponentType>(std::forward<Args>(args)...);
     }
 
@@ -70,13 +71,22 @@ class GameObject
         return mScripts.contains(typeid(ScriptType));
     }
 
+    // overwrites the index if there a component there already
+    // this is intended, each object should only have one of any script, 
+    // and the other functions are built on this assumption
     template <typename ScriptType, typename... Args>
     void AddScript(Args&&... args)
     {
-        // overwrites the index if there a component there already
-        // this is intended, each object should only have one of any script, 
-        // and the other functions are built on this assumption
         mScripts[typeid(ScriptType)] = std::make_unique<ScriptType>(std::forward<Args>(args)...);
+    }
+
+    // a function to call the specified member function of each script attached to this object
+    template <typename Function, typename... Args>
+    void CallScripts(Function function, const Args&... args)
+    {
+        for (Script& script : mScripts){
+            std::invoke(function, *script, args..);
+        }
     }
 
     private:
