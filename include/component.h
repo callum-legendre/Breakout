@@ -13,6 +13,11 @@ class Component
 
     virtual ~Component() = default;
 
+    GameObject* GetParent()
+    {
+        return mParent;
+    }
+
     private:
     GameObject* mParent;
 };

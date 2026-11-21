@@ -1,15 +1,17 @@
-#include "components/physicsComponent.h"
+#include "components/colliderComponent.h"
 
 #include <SDL3/SDL3.h>
+#include "script.h"
 
 ColliderComponent::ColliderComponent(GameObject* parent) : Component(parent) {}
 
-void ColliderComponent::CheckCollision(SDL_FRect otherTransform)
+void ColliderComponent::CheckCollision(ColliderComponent* otherCollider)
 {
-    mCollision = SDL_HasRectIntersectionFloat(mParent->GetTransform(), otherTransform);
-}
 
-bool ColliderComponent::HasCollision()
-{
-    return mCollision;
+    if (SDL_HasRectIntersectionFloat(mParent->GetTransform(), otherCollider->GetParent()->GetTransform())){
+        
+        mParent->CallScripts(&Script::OnCollision, *this, otherCollider);
+    }
+
+    
 }

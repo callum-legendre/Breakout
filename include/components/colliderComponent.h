@@ -9,12 +9,7 @@ class ColliderComponent : public Component
 {
     public:
     ColliderComponent(GameObject* parent);
-    void CheckCollision(SDL_FRect otherCollider);
-    bool HasCollision();
-
-    private:
-    bool mCollision = false;
-    
+    void CheckCollision(ColliderComponent* otherCollider);
 };
 
 #endif
