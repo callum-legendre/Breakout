@@ -16,10 +16,6 @@ class InputComponent : public Component
     InputComponent(GameObject* parent);
 
     void SetInput(PlayerInput newInput);
-    PlayerInput GetInput();
-
-    private:
-    PlayerInput mInput = {};
 };
 
 #endif

@@ -1,14 +1,10 @@
 #include "components/inputComponent.h"
 
+#include "gameObject.h"
 
 InputComponent::InputComponent(GameObject* parent) : Component(parent) {}
 
 void InputComponent::SetInput(PlayerInput newInput)
 {
-    mInput = newInput;
-}
-
-PlayerInput InputComponent::GetInput()
-{
-    return mInput;
+    mParent->CallScripts(&Script::StoreInput, newInput);
 }
