@@ -18,7 +18,8 @@ Engine::Engine()
     mWindow = SDL_CreateWindow("Breakout", mWindowWidth, mWindowHeight, SDL_WINDOW_ALWAYS_ON_TOP);
     mRenderer = SDL_CreateRenderer(mWindow, nullptr);
 
-    mResourceManager = new ResourceManager(mRenderer, "resources.json");
+    mResourceManager = std::make_unique<ResourceManager>(mRenderer, "resources.json");
+    mObjectFactory = std::make_unique<ObjectFactory>(mResourceManager);
 
     LoadLevel();
 
@@ -170,8 +171,7 @@ void Engine::LoadLevel()
         std::vector<std::unique_ptr<GameObject>> newRow;
         newRow.reserve(numCols);
         for (size_t col = 0; col < numCols; col++){
-            // newRow.push_back(/*mObjectFactory.CreateBlock(layoutArray[row][col])*/);
-            // TODO: uncomment line once factory is done
+            newRow.push_back(mObjectFactory.CreateBlock(layoutArray[row][col], row * 32, col * 32));
         }
         newLevel.push_back(std::move(newRow));
     }

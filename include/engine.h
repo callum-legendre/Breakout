@@ -5,9 +5,11 @@
 #include <iostream>
 #include <memory>
 #include <SDL3/SDL.h>
+
 class ResourceManager;
 class GameObject;
 struct PlayerInput;
+class ObjectFactory;
 
 class Engine
 {
@@ -32,8 +34,11 @@ class Engine
     bool mRunning = false;
     size_t mWindowWidth = 0;
     size_t mWindowHeight = 0;
-    ResourceManager* mResourceManager = nullptr;
     float mFixedUpdateTime = 1/60;
+
+    // -- manager and factory --
+    std::unique_ptr<ObjectFactory> mObjectFactory;
+    std::unique_ptr<ResourceManager> mResourceManager;
 
     // -- level properties and methods -- 
     void LoadLevel();

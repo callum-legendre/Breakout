@@ -43,3 +43,8 @@ std::string ResourceManager::GetLevelPath(int levelNumber)
 {
     return mLevelPaths[levelNumber];
 }
+
+SDL_Texture* ResourceManager::GetTexture(std::string texture)
+{
+    return mSprites[texture];
+}

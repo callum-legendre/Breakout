@@ -20,6 +20,7 @@ class ResourceManager
     // i don't foresee myself accidentally copying it but you can never be too safe
 
     std::string GetLevelPath(int levelNumber);
+    SDL_Texture* GetTexture(std::string texture);
 
     private:
     std::vector<std::string> mLevelPaths;
