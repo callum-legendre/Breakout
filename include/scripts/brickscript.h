@@ -6,7 +6,7 @@
 class BrickScript : public Script
 {
     public:
-    BrickScript(GameObject* parent);
+    BrickScript(GameObject* parent, int health);
     void OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider) override;
 };
 
