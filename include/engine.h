@@ -7,6 +7,7 @@
 #include <SDL3/SDL.h>
 class ResourceManager;
 class GameObject;
+struct PlayerInput;
 
 class Engine
 {
@@ -32,13 +33,15 @@ class Engine
     size_t mWindowWidth = 0;
     size_t mWindowHeight = 0;
     ResourceManager* mResourceManager = nullptr;
+    float mFixedUpdateTime = 1/60;
 
     // -- level properties and methods -- 
     void LoadLevel();
     size_t mCurrentLevelNum = 0;
     std::vector<std::vector<std::unique_ptr<GameObject>>> mCurrentLevelBlocks;
     std::unique_ptr<GameObject> mPaddle;
-    std::unique_ptr<GameObject> mBall;
+    std::vector<std::unique_ptr<GameObject>> mBalls;
+    size_t mPlayerScore = 0;
 };
 
 #endif

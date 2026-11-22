@@ -2,9 +2,12 @@
 
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <cmath>
 
 #include "resourceManager.h"
 #include "gameObject.h"
+#include "component/inputComponent.h"
+#include "component/colliderComponent.h"
 
 Engine::Engine()
 {
@@ -18,6 +21,9 @@ Engine::Engine()
     mResourceManager = new ResourceManager(mRenderer, "resources.json");
 
     LoadLevel();
+
+    mPaddle = // paddle factory
+    mBalls.push_back(/*object factory create ball*/);
 }
 
 Engine::~Engine()
@@ -33,10 +39,23 @@ void Engine::Run()
 {
     mRunning = true;
 
+    float accumulatedTime = 0.0f;
+
+    int previousTime = 0;
+    int currentTime = 0;
+
     while (mRunning == true){
 
         Input();
-        Update();
+
+        currentTime = SDL_GetTicks();
+        accumulatedTime += (currentTime - previousTime);
+        while (accumulatedTime >= mFixedUpdateTime){
+            Update();
+            accumulatedTime -= mFixedUpdateTime;
+        }
+        previousTime = currentTime;
+
         Render();
     }
 }
@@ -56,18 +75,70 @@ void Engine::Input()
             break;
         }
     }
+
+    PlayerInput input;
+    SDL_MouseButtonFlags state = SDL_GetMouseState(&input.mousePos.x, &input.mousePos.y);
+    input.lMouseClick = (state & SDL_BUTTON_LMASK);
+
+    mPaddle->GetComponent<InputComponent>()->SetInput(input);
 }
 
 void Engine::Update()
 {
-    // update behavior will go here
+    // update scripts
+    mPaddle->CallScripts(Script::Update, mFixedUpdateTime);
+    for (GameObject* ball : mBalls){
+        ball->CallScripts(Script::Update, mFixedUpdateTime);
+    }
+
+    // check for collisions
+    for (GameObject* ball : mBalls){
+
+        SDL_FRect ballTransform = ball->GetTransform();
+
+        // get the posititions of the ball but converted into the tile grid that we have
+        int rows = mCurrentLevelBlocks.size();
+        int columns = mCurrentLevelBlocks[0].size();
+        Vector2 topLeft = Vector2(std::floor(ballTransform.x / rows), std::floor(ballTransform.y / columns));
+        Vector2 topRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / rows), std::floor(ballTransform.y / columns));
+        Vector2 bottomLeft = Vector2(std::floor(ballTransform.x / rows), std::floor((ballTransform.y + ballTransform.h) / columns));
+        Vector2 bottomRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / rows, std::floor(ballTransform.y + ballTransform.h) / columns));
+
+        // adds the unique grids to a list of unique grids
+        // this is to avoid calling collision checks on a one square 4 times
+        std::vector<Vector2> uniqueGrids;
+        for (Vector2& value : {topLeft, topRight, bottomLeft, bottomRight}){
+            if (std::find(uniqueGrids.begin(), uniqueGrids.end(), value) == uniqueGrids.end()){
+                uniqueGrids.push_back(value);
+            }
+        }
+
+        // get the ball's collider
+        ColliderComponent* ballCollider = ball->GetComponent<ColliderComponent>();
+
+        // check collisions in that grid
+        for (Vector2& grid : uniqueGrids){
+
+            if (mCurrentLevelBlocks[grid.x][grid.y] != nullptr){
+
+                ColliderComponent* brickCollider = mCurrentLevelBlocks[grid.x][grid.y]->GetComponent<ColliderComponent>();
+
+                brickCollider->CheckCollision(ballCollider);
+                ballCollider->CheckCollision(brickCollider);
+            }
+        }
+
+        // check collision with the paddle
+        ColliderComponent* paddleCollider = mPaddle->GetComponent<ColliderComponent>();
+        ballCollider->CheckCollision(paddleCollider);
+    }
 }
 
 void Engine::Render()
 {
     SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE); 
     // 0,0,0 is black
-    // SDL_ALPHA_OPAQUE is the colour that SDL should make transparent, this corresponds to the funny grid thingy in pngs
+    // SDL_ALPHA_OPAQUE is the colour that SDL should make transparent, this is set to the standard png tansparent one
 
     SDL_RenderClear(mRenderer);
 

@@ -9,6 +9,8 @@ struct Vector2
     Vector2(float xPos, float yPos);
     float x;
     float y;
+
+    bool operator==(const Vector2& rvalue) const;
 };
 
 
