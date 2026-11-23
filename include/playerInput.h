@@ -5,7 +5,7 @@
 
 struct PlayerInput
 {
-    Vector2 mousePos = {0,0};
+    Vector2 mousePos = Vector2(0,0);
     bool lMouseClick = false;
 };
 

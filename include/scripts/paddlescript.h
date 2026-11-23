@@ -7,7 +7,7 @@ class PaddleScript : public Script
 {
     public:
     PaddleScript(GameObject* parent);
-    void Update(float deltaTime) override;
+    void Update(float) override;
 };
 
 #endif
