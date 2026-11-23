@@ -15,3 +15,8 @@ void ColliderComponent::CheckCollision(ColliderComponent* otherCollider)
 
     
 }
+
+SDL_FRect ColliderComponent::GetColliderRect()
+{
+    return mParent->GetTransform();
+}

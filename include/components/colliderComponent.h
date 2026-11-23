@@ -10,6 +10,7 @@ class ColliderComponent : public Component
     public:
     ColliderComponent(GameObject* parent);
     void CheckCollision(ColliderComponent* otherCollider);
+    SDL_FRect GetColliderRect();
 };
 
 #endif
