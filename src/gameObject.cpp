@@ -34,3 +34,8 @@ void GameObject::MovePosition(Vector2 direction)
     mTransform.x += direction.x;
     mTransform.y += direction.y;
 }
+
+void GameObject::Destroy()
+{
+    mDestroy = true;
+}

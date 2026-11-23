@@ -26,6 +26,8 @@ class GameObject
     void SetPosition(Vector2 newPos);
     void MovePosition(Vector2 direction);
 
+    void Destroy();
+
     // -- component functions --
     template <typename ComponentType>
     ComponentType* GetComponent()
@@ -93,6 +95,7 @@ class GameObject
     SDL_FRect mTransform;
     std::unordered_map<std::type_index, std::unique_ptr<Component>> mComponents;
     std::unordered_map<std::type_index, std::unique_ptr<Script>> mScripts; 
+    bool mDestroy = false;
 };
 
 #endif
