@@ -31,7 +31,7 @@ std::unique_ptr<GameObject> ObjectFactory::CreateBall()
 
 std::unique_ptr<GameObject> ObjectFactory::CreatePaddle()
 {
-    SpriteInfo paddleInfo = mResourceManager->GetTexture("paddleTexture");
+    SpriteInfo paddleInfo = mResourceManager->GetTexture("paddle");
 
     std::unique_ptr<GameObject> paddle = std::make_unique<GameObject>(0, 0, paddleInfo.spriteWidth, paddleInfo.spriteHeight); // dimensions of the paddle are 86x10, location does not matter because it will soon be overwritten by input
 
@@ -46,7 +46,7 @@ std::unique_ptr<GameObject> ObjectFactory::CreatePaddle()
 
 std::unique_ptr<GameObject> ObjectFactory::CreateBrick(int brickType, float x, float y)
 {
-    SpriteInfo brickInfo = mResourceManager->GetTexture("brickTexture");
+    SpriteInfo brickInfo = mResourceManager->GetTexture("brick");
 
     std::unique_ptr<GameObject> brick = std::make_unique<GameObject>(x, y, brickInfo.spriteWidth, brickInfo.spriteHeight); // bricks always are 32x32, positions decided before function call
 
