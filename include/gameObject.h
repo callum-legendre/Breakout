@@ -31,7 +31,7 @@ class GameObject
     ComponentType* GetComponent()
     {
         if (HasComponent<ComponentType>()){
-            return static_cast<ComponentType*>(mComponents.at(typeid(ComponentType)));
+            return static_cast<ComponentType*>(mComponents.at(typeid(ComponentType)).get());
         }
         else {
             return nullptr;
@@ -58,7 +58,7 @@ class GameObject
     ScriptType* GetScript()
     {
         if (HasScript<ScriptType>()){
-            return static_cast<ScriptType*>(mScripts.at(typeid(ScriptType)));
+            return static_cast<ScriptType*>(mScripts.at(typeid(ScriptType)).get());
         }
         else {
             return nullptr;

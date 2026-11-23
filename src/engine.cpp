@@ -6,9 +6,11 @@
 
 #include "resourceManager.h"
 #include "gameObject.h"
-#include "component/inputComponent.h"
-#include "component/colliderComponent.h"
+#include "components/inputComponent.h"
+#include "components/colliderComponent.h"
+#include "components/spriteComponent.h"
 #include "objectFactory.h"
+#include "script.h"
 
 Engine::Engine()
 {
@@ -24,8 +26,8 @@ Engine::Engine()
 
     LoadLevel();
 
-    mPaddle = // paddle factory
-    mBalls.push_back(/*object factory create ball*/);
+    mPaddle = mObjectFactory->CreatePaddle();
+    mBalls.push_back(mObjectFactory->CreateBall());
 }
 
 Engine::~Engine()
@@ -86,13 +88,13 @@ void Engine::Input()
 void Engine::Update()
 {
     // update scripts
-    mPaddle->CallScripts(Script::Update, mFixedUpdateTime);
-    for (GameObject* ball : mBalls){
-        ball->CallScripts(Script::Update, mFixedUpdateTime);
+    mPaddle->CallScripts(&Script::Update, mFixedUpdateTime);
+    for (const auto& ball : mBalls){
+        ball->CallScripts(&Script::Update, mFixedUpdateTime);
     }
 
     // check for collisions
-    for (GameObject* ball : mBalls){
+    for (const auto& ball : mBalls){
 
         SDL_FRect ballTransform = ball->GetTransform();
 
@@ -102,12 +104,12 @@ void Engine::Update()
         Vector2 topLeft = Vector2(std::floor(ballTransform.x / rows), std::floor(ballTransform.y / columns));
         Vector2 topRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / rows), std::floor(ballTransform.y / columns));
         Vector2 bottomLeft = Vector2(std::floor(ballTransform.x / rows), std::floor((ballTransform.y + ballTransform.h) / columns));
-        Vector2 bottomRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / rows, std::floor(ballTransform.y + ballTransform.h) / columns));
+        Vector2 bottomRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / rows), std::floor((ballTransform.y + ballTransform.h) / columns));
 
         // adds the unique grids to a list of unique grids
         // this is to avoid calling collision checks on a one square 4 times
         std::vector<Vector2> uniqueGrids;
-        for (Vector2& value : {topLeft, topRight, bottomLeft, bottomRight}){
+        for (const Vector2& value : {topLeft, topRight, bottomLeft, bottomRight}){
             if (std::find(uniqueGrids.begin(), uniqueGrids.end(), value) == uniqueGrids.end()){
                 uniqueGrids.push_back(value);
             }
