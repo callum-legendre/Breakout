@@ -18,7 +18,7 @@ class Component
         return mParent;
     }
 
-    private:
+    protected:
     GameObject* mParent;
 };
 

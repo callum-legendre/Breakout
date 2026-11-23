@@ -11,8 +11,6 @@ struct Vector2
     Vector2(float xPos, float yPos);
     float x;
     float y;
-<<<<<<< Updated upstream
-=======
 
     bool operator==(const Vector2& rvalue) const;
 
@@ -22,7 +20,6 @@ struct Vector2
     {
         return Vector2(this.x * rvalue, this.y * rvalue);
     }
->>>>>>> Stashed changes
 };
 
 
