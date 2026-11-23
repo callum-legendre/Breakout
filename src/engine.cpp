@@ -145,6 +145,17 @@ void Engine::Render()
     SDL_RenderClear(mRenderer);
 
     // render objects here
+    mPaddle->GetComponent<SpriteComponent>()->Render(mRenderer);
+    
+    for (const auto& ball : mBalls){
+        ball->GetComponent<SpriteComponent>()->Render(mRenderer);
+    }
+
+    for (const auto& row : mCurrentLevelBlocks){
+        for (const auto& brick : row){
+            brick->GetComponent<SpriteComponent>()->Render(mRenderer);
+        }
+    }
 
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     // 255, 255, 255 sets the color to white
