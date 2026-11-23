@@ -37,5 +37,10 @@ void GameObject::MovePosition(Vector2 direction)
 
 void GameObject::Destroy()
 {
-    mDestroy = true;
+    mAlive = false;
+}
+
+bool GameObject::GetStatus()
+{
+    return mAlive;
 }

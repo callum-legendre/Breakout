@@ -134,6 +134,21 @@ void Engine::Update()
         ColliderComponent* paddleCollider = mPaddle->GetComponent<ColliderComponent>();
         ballCollider->CheckCollision(paddleCollider);
     }
+
+    // destroy objects
+    for (const auto& ball : mBalls){
+        if (ball->GetAlive() == false){
+            mBalls.erase(ball);
+        }
+    }
+
+    for (const auto& row : mCurrentLevelBlocks){
+        for (const auto& brick : row){
+            if (brick->GetAlive() == false){
+                row.erase(brick);
+            }
+        }
+    }
 }
 
 void Engine::Render()

@@ -27,6 +27,7 @@ class GameObject
     void MovePosition(Vector2 direction);
 
     void Destroy();
+    bool GetAlive();
 
     // -- component functions --
     template <typename ComponentType>
@@ -95,7 +96,7 @@ class GameObject
     SDL_FRect mTransform;
     std::unordered_map<std::type_index, std::unique_ptr<Component>> mComponents;
     std::unordered_map<std::type_index, std::unique_ptr<Script>> mScripts; 
-    bool mDestroy = false;
+    bool mAlive = true;
 };
 
 #endif
