@@ -34,7 +34,7 @@ class Engine
     bool mRunning = false;
     size_t mWindowWidth = 0;
     size_t mWindowHeight = 0;
-    float mFixedUpdateTime = 1/60;
+    float mFixedUpdateTime = 1.0f/60.0f;
 
     // -- manager and factory --
     std::unique_ptr<ObjectFactory> mObjectFactory;

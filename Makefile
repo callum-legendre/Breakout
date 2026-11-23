@@ -1,4 +1,4 @@
-CXX := clang++
+CXX := clang++ -g -O0
 CPPFLAGS += -Iinclude $(shell pkg-config --cflags sdl3)
 CXXFLAGS += -std=c++20 -Wall -Wextra
 LDLIBS += $(shell pkg-config --libs sdl3)

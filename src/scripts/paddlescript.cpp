@@ -11,7 +11,7 @@ void PaddleScript::Update(float)
 {
     SDL_FRect paddleTransform = mParent->GetTransform();
 
-    Vector2 centerPaddle = Vector2(mInput.mousePos.x - (paddleTransform.w / 2), mInput.mousePos.y);
+    Vector2 centerPaddle = Vector2(mInput.mousePos.x - (paddleTransform.w / 2), paddleTransform.y);
 
     mParent->SetPosition(centerPaddle);
 }

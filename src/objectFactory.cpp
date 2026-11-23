@@ -34,7 +34,7 @@ std::unique_ptr<GameObject> ObjectFactory::CreatePaddle()
 {
     SpriteInfo paddleInfo = mResourceManager->GetTexture("paddle");
 
-    std::unique_ptr<GameObject> paddle = std::make_unique<GameObject>(0, 0, paddleInfo.spriteWidth, paddleInfo.spriteHeight); // dimensions of the paddle are 86x10, location does not matter because it will soon be overwritten by input
+    std::unique_ptr<GameObject> paddle = std::make_unique<GameObject>(320, 470, paddleInfo.spriteWidth, paddleInfo.spriteHeight); // dimensions of the paddle are 86x10, location does not matter because it will soon be overwritten by input
 
     paddle->AddComponent<ColliderComponent>(paddle.get());
     paddle->AddComponent<InputComponent>(paddle.get());

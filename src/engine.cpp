@@ -51,7 +51,7 @@ void Engine::Run()
         Input();
 
         currentTime = SDL_GetTicks();
-        accumulatedTime += (currentTime - previousTime);
+        accumulatedTime += static_cast<float>(currentTime - previousTime) / 1000; // this converts into seconds from milliseconds
         while (accumulatedTime >= mFixedUpdateTime){
             Update();
             accumulatedTime -= mFixedUpdateTime;
@@ -136,17 +136,17 @@ void Engine::Update()
     }
 
     // destroy objects
-    for (size_t i = 0; i < mBalls.size(); i++){
-        if (mBalls[i]->GetAlive() == false){
-            mBalls[i].reset();
+    for (auto& ball : mBalls){
+        if (ball && ball->GetAlive() == false){
+            ball.reset();
         }
 
     }
 
     for (auto& row : mCurrentLevelBlocks){
-        for (size_t i = 0; i < row.size(); i++){
-            if (row[i]->GetAlive() == false){
-                row[i].reset();
+        for (auto& brick : row){
+            if (brick && brick->GetAlive() == false){
+                brick.reset();
             }
         }
     }
@@ -164,12 +164,16 @@ void Engine::Render()
     mPaddle->GetComponent<SpriteComponent>()->Render(mRenderer);
     
     for (const auto& ball : mBalls){
-        ball->GetComponent<SpriteComponent>()->Render(mRenderer);
+        if (ball){
+            ball->GetComponent<SpriteComponent>()->Render(mRenderer);
+        }
     }
 
     for (const auto& row : mCurrentLevelBlocks){
         for (const auto& brick : row){
-            brick->GetComponent<SpriteComponent>()->Render(mRenderer);
+            if (brick){
+                brick->GetComponent<SpriteComponent>()->Render(mRenderer);
+            }
         }
     }
 
@@ -199,7 +203,9 @@ void Engine::LoadLevel()
         std::vector<std::unique_ptr<GameObject>> newRow;
         newRow.reserve(numCols);
         for (size_t col = 0; col < numCols; col++){
-            newRow.push_back(mObjectFactory->CreateBrick(layoutArray[row][col], row * 32, col * 32));
+            if (layoutArray[row][col] != 0){
+                newRow.push_back(mObjectFactory->CreateBrick(layoutArray[row][col], col * 32, row * 32));
+            }
         }
         newLevel.push_back(std::move(newRow));
     }
