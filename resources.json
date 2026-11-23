@@ -9,14 +9,14 @@
             "textureDimensions" : {"width" : 96, "height" : 10}
         },
         "ball" : {
-            "path" : "",
+            "path" : "resources/sprites/ball.bmp",
             "spriteDimensions" : {"width" : 16, "height" : 16},
             "textureDimensions" : {"width" : 16, "height" : 16}
         },
         "brick" : {
-            "path" : "",
+            "path" : "resources/sprites/brick.bmp",
             "spriteDimensions" : {"width" : 32, "height" : 32},
-            "textureDimensions" : {"width" : ?, "height" : ?}
+            "textureDimensions" : {"width" : 96, "height" : 64}
         }
     }
 }
