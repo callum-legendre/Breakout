@@ -84,8 +84,8 @@ class GameObject
     template <typename Function, typename... Args>
     void CallScripts(Function function, const Args&... args)
     {
-        for (Script& script : mScripts){
-            std::invoke(function, *script, args..);
+        for (const auto& [type, script] : mScripts){
+            std::invoke(function, *script, args...);
         }
     }
 

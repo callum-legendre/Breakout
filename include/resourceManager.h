@@ -11,11 +11,11 @@ struct SDL_Renderer;
 struct SpriteInfo
 {
     SDL_Texture* texture;
-    int textureWidth;
-    int textureHeight;
-    int spriteWidth;
-    int spriteHeight;
-}
+    float textureWidth;
+    float textureHeight;
+    float spriteWidth;
+    float spriteHeight;
+};
 
 class ResourceManager
 {
@@ -29,11 +29,11 @@ class ResourceManager
     // i don't foresee myself accidentally copying it but you can never be too safe
 
     std::string GetLevelPath(int levelNumber);
-    TextureInfo GetTexture(std::string texture);
+    SpriteInfo GetTexture(std::string texture);
 
     private:
     std::vector<std::string> mLevelPaths;
-    std::unordered_map<std::string, TextureInfo> mSprites;
+    std::unordered_map<std::string, SpriteInfo> mSprites;
     // audio files
 };
 

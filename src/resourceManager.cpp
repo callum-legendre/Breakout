@@ -43,7 +43,7 @@ ResourceManager::ResourceManager(SDL_Renderer* renderer, const char* filepath)
 
 ResourceManager::~ResourceManager()
 {
-    for (SpriteInfo info : mSprites){
+    for (const auto& [spriteName, info] : mSprites){
 
         SDL_DestroyTexture(info.texture);
     }
@@ -54,7 +54,7 @@ std::string ResourceManager::GetLevelPath(int levelNumber)
     return mLevelPaths[levelNumber];
 }
 
-TextureInfo ResourceManager::GetTexture(std::string texture)
+SpriteInfo ResourceManager::GetTexture(std::string texture)
 {
     return mSprites[texture];
 }

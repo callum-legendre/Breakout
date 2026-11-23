@@ -1,13 +1,14 @@
 #include "components/spriteComponent.h"
 #include "resourceManager.h"
-#include <SDL3/SDL3.h>
+#include "gameObject.h"
+#include <SDL3/SDL.h>
 
 SpriteComponent::SpriteComponent(GameObject* parent, SpriteInfo info) : Component(parent)
 {
-    mSpriteTexture = info.texture;
+    mTexture = info.texture;
 
-    for (size_t j = 0; j < info.textureHeight; i += info.spriteHeight){
-        for (size_t i = 0; i < info.textureWidth; i += info.spriteWidth){
+    for (float j = 0; j < info.textureHeight; j += info.spriteHeight){
+        for (float i = 0; i < info.textureWidth; i += info.spriteWidth){
             SDL_FRect frame = {i, j, info.spriteWidth, info.spriteHeight};
             mFrames.push_back(frame);
         }
@@ -18,7 +19,8 @@ SpriteComponent::SpriteComponent(GameObject* parent, SpriteInfo info) : Componen
 
 void SpriteComponent::Render(SDL_Renderer* renderer)
 {
-    SDL_RenderTexture(renderer, mTexture, mFrames[mCurrentFrame], mParent->GetTransform());
+    SDL_FRect transform = mParent->GetTransform();
+    SDL_RenderTexture(renderer, mTexture, &mFrames[mCurrentFrame], &transform);
 }
 
 void SpriteComponent::ChangeFrame(int newFrame)
