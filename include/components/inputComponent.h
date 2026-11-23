@@ -3,12 +3,7 @@
 
 #include "component.h"
 #include "vector2.h"
-
-struct PlayerInput
-{
-    Vector2 mousePos = {0,0};
-    bool lMouseClick = false;
-};
+#include "playerInput.h"
 
 class InputComponent : public Component
 {

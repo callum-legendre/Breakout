@@ -3,6 +3,20 @@
         "testlevel" : "resources/levels/testlevel.json"
     },
     "sprites" : {
-        "paddle" : "resources/sprites/paddle.bmp"
+        "paddle" : {
+            "path" : "resources/sprites/paddle.bmp",
+            "spriteDimensions" : {"width" : 96, "height" : 10},
+            "textureDimensions" : {"width" : 96, "height" : 10}
+        },
+        "ball" : {
+            "path" : "resources/sprites/ball.bmp",
+            "spriteDimensions" : {"width" : 16, "height" : 16},
+            "textureDimensions" : {"width" : 16, "height" : 16}
+        },
+        "brick" : {
+            "path" : "resources/sprites/brick.bmp",
+            "spriteDimensions" : {"width" : 32, "height" : 32},
+            "textureDimensions" : {"width" : 96, "height" : 64}
+        }
     }
 }

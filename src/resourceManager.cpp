@@ -17,15 +17,25 @@ ResourceManager::ResourceManager(SDL_Renderer* renderer, const char* filepath)
     }
 
     // get the sprites
-    for (const auto& [spriteName, rawPath] : resources.at("sprites").items()){
+    for (const auto& [spriteName, spriteData] : resources.at("sprites").items()){
 
-        std::string path =rawPath.get<std::string>();
+        SpriteInfo info;
+
+        std::string path = spriteData.at("path").get<std::string>();
         const char* spritePath = path.c_str();
         SDL_Surface* surface = SDL_LoadBMP(spritePath);
 
-        mSprites[spriteName] = SDL_CreateTextureFromSurface(renderer, surface);
+        info.texture = SDL_CreateTextureFromSurface(renderer, surface);
 
         SDL_DestroySurface(surface);
+
+        info.textureWidth = spriteData.at("textureDimensions").at("width");
+        info.textureHeight = spriteData.at("textureDimensions").at("height");
+
+        info.spriteWidth = spriteData.at("spriteDimensions").at("width");
+        info.spriteHeight = spriteData.at("spriteDimensions").at("height");
+
+        mSprites[spriteName] = info;
     }
 
     // TODO audio files
@@ -33,9 +43,9 @@ ResourceManager::ResourceManager(SDL_Renderer* renderer, const char* filepath)
 
 ResourceManager::~ResourceManager()
 {
-    for (const auto& [spriteName, spriteTexture] : mSprites){
+    for (const auto& [spriteName, info] : mSprites){
 
-        SDL_DestroyTexture(spriteTexture);
+        SDL_DestroyTexture(info.texture);
     }
 }
 
@@ -44,7 +54,7 @@ std::string ResourceManager::GetLevelPath(int levelNumber)
     return mLevelPaths[levelNumber];
 }
 
-SDL_Texture* ResourceManager::GetTexture(std::string texture)
+SpriteInfo ResourceManager::GetTexture(std::string texture)
 {
     return mSprites[texture];
 }

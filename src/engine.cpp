@@ -8,6 +8,7 @@
 #include "gameObject.h"
 #include "component/inputComponent.h"
 #include "component/colliderComponent.h"
+#include "objectFactory.h"
 
 Engine::Engine()
 {
@@ -19,7 +20,7 @@ Engine::Engine()
     mRenderer = SDL_CreateRenderer(mWindow, nullptr);
 
     mResourceManager = std::make_unique<ResourceManager>(mRenderer, "resources.json");
-    mObjectFactory = std::make_unique<ObjectFactory>(mResourceManager);
+    mObjectFactory = std::make_unique<ObjectFactory>(mResourceManager.get());
 
     LoadLevel();
 
@@ -29,8 +30,6 @@ Engine::Engine()
 
 Engine::~Engine()
 {
-    delete mResourceManager;
-
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
@@ -171,7 +170,7 @@ void Engine::LoadLevel()
         std::vector<std::unique_ptr<GameObject>> newRow;
         newRow.reserve(numCols);
         for (size_t col = 0; col < numCols; col++){
-            newRow.push_back(mObjectFactory.CreateBlock(layoutArray[row][col], row * 32, col * 32));
+            newRow.push_back(mObjectFactory->CreateBrick(layoutArray[row][col], row * 32, col * 32));
         }
         newLevel.push_back(std::move(newRow));
     }
