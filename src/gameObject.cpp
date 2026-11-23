@@ -40,7 +40,7 @@ void GameObject::Destroy()
     mAlive = false;
 }
 
-bool GameObject::GetStatus()
+bool GameObject::GetAlive()
 {
     return mAlive;
 }

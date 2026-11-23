@@ -1,13 +1,11 @@
-#include "ballscript.h"
+#include "scripts/ballscript.h"
 #include "gameObject.h"
 #include "components/colliderComponent.h"
+#include "vector2.h"
 
 #include <SDL3/SDL.h>
 
-BallScript::BallScript(GameObject* parent) : Script(parent) 
-{
-    mVelocity = Vector2(0, 0);
-}
+BallScript::BallScript(GameObject* parent) : Script(parent), mVelocity(0,0) {}
 
 void BallScript::Update(float deltaTime) 
 {
@@ -21,15 +19,15 @@ void BallScript::Update(float deltaTime)
     }
 
     // move the ball
-    mParent->MovePosition(mVelocity * speed * delaTime);
+    mParent->MovePosition(mVelocity * mSpeed * deltaTime);
 }
 
 void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider)
 {
     SDL_FRect intersection;
-    SDL_FRect thisRect = thisCollider->GetColliderRect()
-    SDL_FRect otherRect = otherCollider->GetColliderRect()
-    SDL_GetRectIntersectionFloat(&thisRect, &otherRec, &intersection);
+    SDL_FRect thisRect = thisCollider->GetColliderRect();
+    SDL_FRect otherRect = otherCollider->GetColliderRect();
+    SDL_GetRectIntersectionFloat(&thisRect, &otherRect, &intersection);
 
     if (intersection.w > intersection.h){ // if it collided with a horizontal edge, negate the y of velocity
         mVelocity.y = -mVelocity.y;

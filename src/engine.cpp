@@ -136,16 +136,17 @@ void Engine::Update()
     }
 
     // destroy objects
-    for (const auto& ball : mBalls){
-        if (ball->GetAlive() == false){
-            mBalls.erase(ball);
+    for (size_t i = 0; i < mBalls.size(); i++){
+        if (mBalls[i]->GetAlive() == false){
+            mBalls[i].reset();
         }
+
     }
 
-    for (const auto& row : mCurrentLevelBlocks){
-        for (const auto& brick : row){
-            if (brick->GetAlive() == false){
-                row.erase(brick);
+    for (auto& row : mCurrentLevelBlocks){
+        for (size_t i = 0; i < row.size(); i++){
+            if (row[i]->GetAlive() == false){
+                row[i].reset();
             }
         }
     }
