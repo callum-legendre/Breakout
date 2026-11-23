@@ -27,7 +27,7 @@ Engine::Engine()
     LoadLevel();
 
     mPaddle = mObjectFactory->CreatePaddle();
-    mBalls.push_back(mObjectFactory->CreateBall());
+    mBalls.push_back(mObjectFactory->CreateBall(mPaddle.get()));
 }
 
 Engine::~Engine()
@@ -83,6 +83,10 @@ void Engine::Input()
     input.lMouseClick = (state & SDL_BUTTON_LMASK);
 
     mPaddle->GetComponent<InputComponent>()->SetInput(input);
+
+    for (auto& ball : mBalls){
+        ball->GetComponent<InputComponent>()->SetInput(input);
+    }
 }
 
 void Engine::Update()
@@ -99,12 +103,10 @@ void Engine::Update()
         SDL_FRect ballTransform = ball->GetTransform();
 
         // get the posititions of the ball but converted into the tile grid that we have
-        int rows = mCurrentLevelBlocks.size();
-        int columns = mCurrentLevelBlocks[0].size();
-        Vector2 topLeft = Vector2(std::floor(ballTransform.x / rows), std::floor(ballTransform.y / columns));
-        Vector2 topRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / rows), std::floor(ballTransform.y / columns));
-        Vector2 bottomLeft = Vector2(std::floor(ballTransform.x / rows), std::floor((ballTransform.y + ballTransform.h) / columns));
-        Vector2 bottomRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / rows), std::floor((ballTransform.y + ballTransform.h) / columns));
+        Vector2 topLeft = Vector2(std::floor(ballTransform.x / 32.0f), std::floor(ballTransform.y / 32.0f));
+        Vector2 topRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / 32.0f), std::floor(ballTransform.y / 32.0f));
+        Vector2 bottomLeft = Vector2(std::floor(ballTransform.x / 32.0f), std::floor((ballTransform.y + ballTransform.h) / 32.0f));
+        Vector2 bottomRight = Vector2(std::floor((ballTransform.x + ballTransform.w) / 32.0f), std::floor((ballTransform.y + ballTransform.h) / 32.0f));
 
         // adds the unique grids to a list of unique grids
         // this is to avoid calling collision checks on a one square 4 times
@@ -121,12 +123,17 @@ void Engine::Update()
         // check collisions in that grid
         for (Vector2& grid : uniqueGrids){
 
-            if (mCurrentLevelBlocks[grid.x][grid.y] != nullptr){
+            int row = static_cast<int>(grid.y);
+            int col = static_cast<int>(grid.x);
 
-                ColliderComponent* brickCollider = mCurrentLevelBlocks[grid.x][grid.y]->GetComponent<ColliderComponent>();
+            if ((row >= 0 && row < static_cast<int>(mCurrentLevelBlocks.size())) && (col >= 0 && col < static_cast<int>(mCurrentLevelBlocks[row].size()))){
 
-                brickCollider->CheckCollision(ballCollider);
-                ballCollider->CheckCollision(brickCollider);
+                if (mCurrentLevelBlocks[row][col] != nullptr){
+                    ColliderComponent* brickCollider = mCurrentLevelBlocks[row][col]->GetComponent<ColliderComponent>();
+
+                    brickCollider->CheckCollision(ballCollider);
+                    ballCollider->CheckCollision(brickCollider);
+                }
             }
         }
 
@@ -172,7 +179,10 @@ void Engine::Render()
     for (const auto& row : mCurrentLevelBlocks){
         for (const auto& brick : row){
             if (brick){
-                brick->GetComponent<SpriteComponent>()->Render(mRenderer);
+                SpriteComponent* sprite = brick->GetComponent<SpriteComponent>();
+                if (sprite){
+                    sprite->Render(mRenderer);
+                }
             }
         }
     }
@@ -205,6 +215,9 @@ void Engine::LoadLevel()
         for (size_t col = 0; col < numCols; col++){
             if (layoutArray[row][col] != 0){
                 newRow.push_back(mObjectFactory->CreateBrick(layoutArray[row][col], col * 32, row * 32));
+            }
+            else {
+                newRow.push_back(nullptr);
             }
         }
         newLevel.push_back(std::move(newRow));

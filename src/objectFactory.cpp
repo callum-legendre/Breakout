@@ -15,7 +15,7 @@ ObjectFactory::ObjectFactory(ResourceManager* resourceManager)
     mResourceManager = resourceManager;
 }
 
-std::unique_ptr<GameObject> ObjectFactory::CreateBall()
+std::unique_ptr<GameObject> ObjectFactory::CreateBall(GameObject* paddle)
 {
     SpriteInfo ballInfo = mResourceManager->GetTexture("ball");
 
@@ -25,7 +25,9 @@ std::unique_ptr<GameObject> ObjectFactory::CreateBall()
 
     ball->AddComponent<SpriteComponent>(ball.get(), ballInfo);
 
-    ball->AddScript<BallScript>(ball.get());
+    ball->AddComponent<InputComponent>(ball.get());
+
+    ball->AddScript<BallScript>(ball.get(), paddle);
 
     return ball;
 }

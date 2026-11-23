@@ -7,7 +7,7 @@
 class BallScript : public Script
 {
     public:
-    BallScript(GameObject* parent);
+    BallScript(GameObject* parent, GameObject* paddle);
     void Update(float deltaTime) override;
     void OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider) override;
 
@@ -16,6 +16,8 @@ class BallScript : public Script
     int mSpeedIncreaseInterval = 10; // this is in seconds
     int mSpeed = 1; // speed is a sclar multiplier for the velocity 
     Vector2 mVelocity; // velocity is a vector that is applied to the ball each frame
+    bool mOnPaddle = true;
+    GameObject* mPaddleReference;
 };
 
 #endif

@@ -12,7 +12,7 @@ class ObjectFactory
     ObjectFactory(ResourceManager* resourceManager);
     ~ObjectFactory() = default;
     std::unique_ptr<GameObject> CreateBrick(int brickType, float x, float y);
-    std::unique_ptr<GameObject> CreateBall();
+    std::unique_ptr<GameObject> CreateBall(GameObject* paddle);
     std::unique_ptr<GameObject> CreatePaddle();
 
     private:

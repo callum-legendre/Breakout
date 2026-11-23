@@ -2,24 +2,44 @@
 #include "gameObject.h"
 #include "components/colliderComponent.h"
 #include "vector2.h"
+#include "playerInput.h"
 
 #include <SDL3/SDL.h>
 
-BallScript::BallScript(GameObject* parent) : Script(parent), mVelocity(0,0) {}
+BallScript::BallScript(GameObject* parent, GameObject* paddle) : Script(parent), mVelocity(0,0) 
+{
+    mPaddleReference = paddle;
+}
 
 void BallScript::Update(float deltaTime) 
 {
-    // handle speed
-    if (mTimer >= mSpeedIncreaseInterval){
-        mSpeed++;
-        mTimer = 0.0f;
+    if (mOnPaddle == true){
+        SDL_FRect paddleTransform = mPaddleReference->GetTransform();
+        SDL_FRect ballTransform = mParent->GetTransform();
+
+        Vector2 centeredBall = Vector2(paddleTransform.x + (paddleTransform.w - ballTransform.w) / 2, paddleTransform.y - ballTransform.h);
+
+        mParent->SetPosition(centeredBall);
+
+        if (mInput.lMouseClick == true){
+            mVelocity = Vector2(500, 100);
+            mOnPaddle = false;
+        }
     }
     else {
-        mTimer += deltaTime;
+        // handle speed
+        if (mTimer >= mSpeedIncreaseInterval){
+            mSpeed++;
+            mTimer = 0.0f;
+        }
+        else {
+            mTimer += deltaTime;
+        }
+
+        // move the ball
+        mParent->MovePosition(mVelocity * mSpeed * deltaTime);
     }
 
-    // move the ball
-    mParent->MovePosition(mVelocity * mSpeed * deltaTime);
 }
 
 void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider)
