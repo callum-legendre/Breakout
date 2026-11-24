@@ -233,15 +233,27 @@ void Engine::UpdateGameState()
         mPlayerLive = false;
     }
     else if (mNumBlocks == 0){
-        mCurrentLevelNum++;
-        LoadLevel();
 
-        for (auto& ball : mBalls){
-            ball.reset();
+        if (mLoadTimer == 0){
+            mCurrentLevelNum++;
+
+            for (auto& ball : mBalls){
+                ball.reset();
+            }
+
+            mLoadTimer += mFixedUpdateTime;
         }
+        else if (mLoadTimer < mLoadTime){
+            mLoadTimer += mFixedUpdateTime;
+        }
+        else {
 
-        mBalls.push_back(mObjectFactory->CreateBall(mPaddle.get()));
-        mBallCount = 1;
+            LoadLevel();
+
+            mBalls.push_back(mObjectFactory->CreateBall(mPaddle.get()));
+            mBallCount = 1;
+            mLoadTimer = 0;
+        }
     }
 }
 
@@ -276,7 +288,7 @@ void Engine::Render()
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     // 255, 255, 255 sets the color to white
 
-    if (mPlayerLive){
+    if (mPlayerLive && mLoadTimer >= 0){
         std::string scoreText = "Score: ";
         scoreText.append(std::to_string(mPlayerScore));
         SDL_RenderDebugText(mRenderer, 10, 10, scoreText.c_str());
@@ -284,8 +296,24 @@ void Engine::Render()
         std::string levelText = "Level ";
         levelText.append(std::to_string(mCurrentLevelNum + 1));
         SDL_RenderDebugText(mRenderer, mWindowWidth - 100, 10, levelText.c_str());
+
+        if (mPlayerLive && mLoadTimer > 0){
+            float oldScaleX;
+            float oldScaleY;
+            SDL_GetRenderScale(mRenderer, &oldScaleX, &oldScaleY);
+
+            float scale = 3;
+            SDL_SetRenderScale(mRenderer, scale, scale);
+
+            std::string completedText = "Level ";
+            completedText.append(std::to_string(mCurrentLevelNum));
+            completedText.append(" completed!");
+            SDL_RenderDebugText(mRenderer, 50 / scale, 50 / scale, completedText.c_str());
+
+            SDL_SetRenderScale(mRenderer, oldScaleX, oldScaleY);
+        }
     }
-    else {
+    else if (!mPlayerLive){
         float oldScaleX;
         float oldScaleY;
         SDL_GetRenderScale(mRenderer, &oldScaleX, &oldScaleY);

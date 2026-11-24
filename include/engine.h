@@ -47,6 +47,8 @@ class Engine
 
     // -- level properties and methods -- 
     void LoadLevel();
+    float mLoadTimer = 0;
+    float mLoadTime = 4.0f;
     size_t mCurrentLevelNum = 0;
     size_t mNumBlocks = 0;
     std::vector<std::vector<std::unique_ptr<GameObject>>> mCurrentLevelBlocks;
