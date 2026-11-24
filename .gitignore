@@ -2,3 +2,41 @@
 *.o
 /Breakout.dSYM
 Breakout.dSYM/Contents/Resources/DWARF/Breakout
+
+# the following was written by ChatGPT:
+
+# Visual Studio local settings and caches
+.vs/
+*.vcxproj.user
+*.suo
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+*.VC.opendb
+ipch/
+
+# Build output directories
+/out/
+/build/
+[Dd]ebug/
+[Rr]elease/
+/x64/
+/x86/
+/Win32/
+
+# C++ intermediate and debugging files
+*.obj
+*.pch
+*.pdb
+*.idb
+*.ilk
+*.ipdb
+*.iobj
+*.tlog
+*.lastbuildstate
+*.VC.db-journal
+
+# Personal CMake settings
+/CMakeUserPresets.json
+
+# Keep solution/project files and vendored SDL .lib/.dll dependencies tracked.

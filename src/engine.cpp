@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <cmath>
+#include <algorithm>
 
 #include "resourceManager.h"
 #include "gameObject.h"
