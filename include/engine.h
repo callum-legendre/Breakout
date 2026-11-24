@@ -47,6 +47,7 @@ class Engine
     std::unique_ptr<GameObject> mPaddle;
     std::vector<std::unique_ptr<GameObject>> mBalls;
     size_t mPlayerScore = 0;
+    size_t mBallCount = 0;
 };
 
 #endif

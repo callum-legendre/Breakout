@@ -14,8 +14,8 @@
 
 Engine::Engine()
 {
-    mWindowWidth = 640;
-    mWindowHeight = 480;
+    mWindowWidth = 704;
+    mWindowHeight = 512;
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO); // can move init into main if we get strange segfaults
     mWindow = SDL_CreateWindow("Breakout", mWindowWidth, mWindowHeight, SDL_WINDOW_ALWAYS_ON_TOP);
@@ -28,6 +28,7 @@ Engine::Engine()
 
     mPaddle = mObjectFactory->CreatePaddle();
     mBalls.push_back(mObjectFactory->CreateBall(mPaddle.get()));
+    mBallCount++;
 }
 
 Engine::~Engine()
@@ -85,7 +86,9 @@ void Engine::Input()
     mPaddle->GetComponent<InputComponent>()->SetInput(input);
 
     for (auto& ball : mBalls){
-        ball->GetComponent<InputComponent>()->SetInput(input);
+        if (ball){
+            ball->GetComponent<InputComponent>()->SetInput(input);
+        }
     }
 }
 
@@ -94,11 +97,21 @@ void Engine::Update()
     // update scripts
     mPaddle->CallScripts(&Script::Update, mFixedUpdateTime);
     for (const auto& ball : mBalls){
-        ball->CallScripts(&Script::Update, mFixedUpdateTime);
+        if (ball){
+            ball->CallScripts(&Script::Update, mFixedUpdateTime);
+
+            if (ball->GetPosition().y > mWindowHeight){
+                ball->Destroy();
+            }
+        }
     }
 
     // check for collisions
     for (const auto& ball : mBalls){
+
+        if (!ball){
+            continue;
+        }
 
         SDL_FRect ballTransform = ball->GetTransform();
 
@@ -139,6 +152,7 @@ void Engine::Update()
 
         // check collision with the paddle
         ColliderComponent* paddleCollider = mPaddle->GetComponent<ColliderComponent>();
+        paddleCollider->CheckCollision(ballCollider);
         ballCollider->CheckCollision(paddleCollider);
     }
 
@@ -146,6 +160,7 @@ void Engine::Update()
     for (auto& ball : mBalls){
         if (ball && ball->GetAlive() == false){
             ball.reset();
+            mBallCount--;
         }
 
     }
@@ -156,6 +171,11 @@ void Engine::Update()
                 brick.reset();
             }
         }
+    }
+
+    // check if the game should end
+    if (mBallCount == 0){
+        mRunning = false;
     }
 }
 
