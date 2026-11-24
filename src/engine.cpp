@@ -34,6 +34,7 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+    mResourceManager.reset();
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
@@ -54,7 +55,7 @@ void Engine::Run()
 
 
         currentTime = SDL_GetTicks();
-        accumulatedTime += static_cast<float>(currentTime - previousTime) / 1000; // this converts into seconds from milliseconds
+        accumulatedTime += std::min(static_cast<float>(currentTime - previousTime) / 1000, 0.5f); // caps the potential accumulated time and also converts into seconds
         while (accumulatedTime >= mFixedUpdateTime){
             Update();
             accumulatedTime -= mFixedUpdateTime;
@@ -340,6 +341,9 @@ void Engine::Render()
 
 void Engine::LoadLevel()
 {
+    // reset block count
+    mNumBlocks = 0;
+
     // get the filepath to json and parse it
     std::string levelPath = mResourceManager->GetLevelPath(mCurrentLevelNum);
     std::ifstream file(levelPath.c_str());
