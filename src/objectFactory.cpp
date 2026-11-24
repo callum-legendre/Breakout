@@ -19,7 +19,7 @@ std::unique_ptr<GameObject> ObjectFactory::CreateBall(GameObject* paddle)
 {
     SpriteInfo ballInfo = mResourceManager->GetTexture("ball");
 
-    std::unique_ptr<GameObject> ball = std::make_unique<GameObject>(0, 0, ballInfo.spriteWidth, ballInfo.spriteHeight); // dimensions of the ball are 16x16, location is 0,0 because unknown
+    std::unique_ptr<GameObject> ball = std::make_unique<GameObject>(0, 0, ballInfo.spriteWidth, ballInfo.spriteHeight, "ball"); // dimensions of the ball are 16x16, location is 0,0 because unknown
 
     ball->AddComponent<ColliderComponent>(ball.get());
 
@@ -36,7 +36,7 @@ std::unique_ptr<GameObject> ObjectFactory::CreatePaddle()
 {
     SpriteInfo paddleInfo = mResourceManager->GetTexture("paddle");
 
-    std::unique_ptr<GameObject> paddle = std::make_unique<GameObject>(320, 470, paddleInfo.spriteWidth, paddleInfo.spriteHeight); // dimensions of the paddle are 86x10, location does not matter because it will soon be overwritten by input
+    std::unique_ptr<GameObject> paddle = std::make_unique<GameObject>(320, 470, paddleInfo.spriteWidth, paddleInfo.spriteHeight, "paddle"); // dimensions of the paddle are 86x10, location does not matter because it will soon be overwritten by input
 
     paddle->AddComponent<ColliderComponent>(paddle.get());
     paddle->AddComponent<InputComponent>(paddle.get());
@@ -51,7 +51,15 @@ std::unique_ptr<GameObject> ObjectFactory::CreateBrick(int brickType, float x, f
 {
     SpriteInfo brickInfo = mResourceManager->GetTexture("brick");
 
-    std::unique_ptr<GameObject> brick = std::make_unique<GameObject>(x, y, brickInfo.spriteWidth, brickInfo.spriteHeight); // bricks always are 32x32, positions decided before function call
+    std::string typeString;
+    if (brickType == -1){
+        typeString = "wall";
+    }
+    else {
+        typeString = "brick";
+    }
+
+    std::unique_ptr<GameObject> brick = std::make_unique<GameObject>(x, y, brickInfo.spriteWidth, brickInfo.spriteHeight, typeString); // bricks always are 32x32, positions decided before function call
 
     brick->AddComponent<ColliderComponent>(brick.get());
     brick->AddScript<BrickScript>(brick.get(), brickType);

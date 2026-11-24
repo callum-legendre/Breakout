@@ -167,7 +167,9 @@ void Engine::UpdateColliders()
                 if (mCurrentLevelBlocks[row][col] != nullptr){
                     ColliderComponent* brickCollider = mCurrentLevelBlocks[row][col]->GetComponent<ColliderComponent>();
 
-                    brickCollider->CheckCollision(ballCollider);
+                    if (brickCollider->CheckCollision(ballCollider) && brickCollider->GetParent()->GetType() == "brick"){
+                        mPlayerScore += 20;
+                    }
                     ballCollider->CheckCollision(brickCollider);
                 }
             }

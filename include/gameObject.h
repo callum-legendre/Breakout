@@ -14,7 +14,7 @@ class Script;
 class GameObject
 {
     public:
-    GameObject(float xPos, float yPos, float width, float height);
+    GameObject(float xPos, float yPos, float width, float height, std::string objectType);
     ~GameObject();
 
     // -- transform methods --
@@ -28,6 +28,7 @@ class GameObject
 
     void Destroy();
     bool GetAlive();
+    std::string GetType();
 
     // -- component functions --
     template <typename ComponentType>
@@ -97,6 +98,7 @@ class GameObject
     std::unordered_map<std::type_index, std::unique_ptr<Component>> mComponents;
     std::unordered_map<std::type_index, std::unique_ptr<Script>> mScripts; 
     bool mAlive = true;
+    std::string mType;
 };
 
 #endif

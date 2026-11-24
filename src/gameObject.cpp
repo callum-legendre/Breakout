@@ -3,12 +3,14 @@
 #include "component.h"
 #include "script.h"
 
-GameObject::GameObject(float xPos, float yPos, float width, float height)
+GameObject::GameObject(float xPos, float yPos, float width, float height, std::string objectType)
 {
     mTransform.x = xPos;
     mTransform.y = yPos;
     mTransform.w = width;
     mTransform.h = height;
+
+    mType = objectType;
 }
 
 GameObject::~GameObject() = default;
@@ -43,4 +45,9 @@ void GameObject::Destroy()
 bool GameObject::GetAlive()
 {
     return mAlive;
+}
+
+std::string GameObject::GetType()
+{
+    return mType;
 }
