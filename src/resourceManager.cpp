@@ -51,7 +51,7 @@ ResourceManager::~ResourceManager()
 
 std::string ResourceManager::GetLevelPath(int levelNumber)
 {
-    return mLevelPaths[levelNumber];
+    return mLevelPaths[levelNumber % mLevelPaths.size()];
 }
 
 SpriteInfo ResourceManager::GetTexture(std::string texture)

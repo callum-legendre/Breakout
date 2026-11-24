@@ -11,7 +11,7 @@ class ObjectFactory
     public:
     ObjectFactory(ResourceManager* resourceManager);
     ~ObjectFactory() = default;
-    std::unique_ptr<GameObject> CreateBrick(int brickType, float x, float y);
+    std::unique_ptr<GameObject> CreateBrick(int brickType, float x, float y, size_t* numBricks);
     std::unique_ptr<GameObject> CreateBall(GameObject* paddle);
     std::unique_ptr<GameObject> CreatePaddle();
 

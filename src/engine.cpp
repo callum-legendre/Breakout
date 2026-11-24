@@ -100,7 +100,7 @@ void Engine::Update()
         UpdateScripts();
         UpdateColliders();
         UpdateDestruction();
-        UpdateGameOver();
+        UpdateGameState();
     }
     else {
         if (mInput.rMouseClick){
@@ -199,15 +199,27 @@ void Engine::UpdateDestruction()
         for (auto& brick : row){
             if (brick && brick->GetAlive() == false){
                 brick.reset();
+                mNumBlocks--;
             }
         }
     }
 }
 
-void Engine::UpdateGameOver()
+void Engine::UpdateGameState()
 {
     if (mBallCount == 0){
         mPlayerLive = false;
+    }
+    else if (mNumBlocks == 0){
+        mCurrentLevelNum++;
+        LoadLevel();
+
+        for (auto& ball : mBalls){
+            ball.reset();
+        }
+
+        mBalls.push_back(mObjectFactory->CreateBall(mPaddle.get()));
+        mBallCount = 1;
     }
 }
 
@@ -291,7 +303,7 @@ void Engine::LoadLevel()
         newRow.reserve(numCols);
         for (size_t col = 0; col < numCols; col++){
             if (layoutArray[row][col] != 0){
-                newRow.push_back(mObjectFactory->CreateBrick(layoutArray[row][col], col * 32, row * 32));
+                newRow.push_back(mObjectFactory->CreateBrick(layoutArray[row][col], col * 32, row * 32, &mNumBlocks));
             }
             else {
                 newRow.push_back(nullptr);

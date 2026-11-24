@@ -27,7 +27,7 @@ class Engine
         void UpdateScripts();
         void UpdateColliders();
         void UpdateDestruction();
-        void UpdateGameOver();
+        void UpdateGameState();
     void Render();
 
     // -- sdl referenes --
@@ -47,6 +47,7 @@ class Engine
     // -- level properties and methods -- 
     void LoadLevel();
     size_t mCurrentLevelNum = 0;
+    size_t mNumBlocks = 0;
     std::vector<std::vector<std::unique_ptr<GameObject>>> mCurrentLevelBlocks;
     std::unique_ptr<GameObject> mPaddle;
     std::vector<std::unique_ptr<GameObject>> mBalls;
