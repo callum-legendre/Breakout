@@ -13,6 +13,8 @@ BallScript::BallScript(GameObject* parent, GameObject* paddle) : Script(parent),
 
 void BallScript::Update(float deltaTime) 
 {
+    mPreviousRect = mParent->GetTransform();
+
     if (mOnPaddle == true){
         SDL_FRect paddleTransform = mPaddleReference->GetTransform();
         SDL_FRect ballTransform = mParent->GetTransform();
@@ -55,44 +57,32 @@ void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent*
     SDL_FRect otherRect = otherCollider->GetColliderRect();
     SDL_GetRectIntersectionFloat(&thisRect, &otherRect, &intersection);
 
-    if (mCollisionHappened && ){
+    if (mCollisionHappened){
         return;
     }
     else {
         mCollisionHappened = true;
     }
 
-    if (intersection.w > intersection.h){ // if it collided with a horizontal edge, negate the y of velocity
-
-        bool above = false;
-        if (thisRect.y + thisRect.h / 2.0f < otherRect.y + otherRect.h / 2.0f){
-            above = true;
-        }
-
-        if (above){
-            thisRect.y = otherRect.y - thisRect.h;
-        }
-        else {
-            thisRect.y = otherRect.y + otherRect.h;
-        }
-
-        mVelocity.y = -mVelocity.y;
-    }
-    else { // otherwise it collided with the verticle edge, so negate the x
-
-        bool left = false;
-        if (thisRect.x + thisRect.w / 2.0f < otherRect.x + otherRect.w / 2.0f){
-            left = true;
-        }
-
-        if (left){
-            thisRect.x = otherRect.x - thisRect.w;
-        }
-        else {
-            thisRect.x = otherRect.x + otherRect.w;
-        }
-
+    if (mPreviousRect.x + mPreviousRect.w <= otherRect.x && thisRect.x + thisRect.w > otherRect.x){
+        // crossed left edge
         mVelocity.x = -mVelocity.x;
+        thisRect.x = otherRect.x - thisRect.w;
+    }
+    else if (mPreviousRect.x >= otherRect.x + otherRect.w && thisRect.x < otherRect.x + otherRect.w){
+        // crossed right edge
+        mVelocity.x = -mVelocity.x;
+        thisRect.x = otherRect.x + otherRect.w;
+    }
+    else if (mPreviousRect.y + mPreviousRect.h <= otherRect.y && thisRect.y + thisRect.h > otherRect.y){
+        // crossed top edge
+        mVelocity.y = -mVelocity.y;
+        thisRect.y = otherRect.y - thisRect.h;
+    }
+    else if (mPreviousRect.y >= otherRect.y + otherRect.h && thisRect.y < otherRect.y + otherRect.h){
+        // crossed bottom edge
+        mVelocity.y = -mVelocity.y;
+        thisRect.y = otherRect.y + otherRect.h;
     }
 
     Vector2 newPos = Vector2(thisRect.x, thisRect.y);

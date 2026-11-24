@@ -16,13 +16,18 @@ class BallScript : public Script
     Vector2* GetVelocity();
 
     private:
+
+    // -- update stuff --
     float mTimer = 0.0f;
     int mSpeedIncreaseInterval = 10; // this is in seconds
     int mSpeed = 1; // speed is a sclar multiplier for the velocity 
     Vector2 mVelocity; // velocity is a vector that is applied to the ball each frame
     bool mOnPaddle = true;
     GameObject* mPaddleReference;
+
+    // -- collision stuff --
     bool mCollisionHappened = false;
+    SDL_FRect mPreviousRect;
 };
 
 #endif
