@@ -87,7 +87,7 @@ void BallScript::LateUpdate(float)
         mParent->SetPosition(centeredBall);
 
         if (mInput.lMouseClick == true){
-            mVelocity = Vector2(100, -100);
+            mVelocity = Vector2(0, -100);
             mOnPaddle = false;
         }
 
