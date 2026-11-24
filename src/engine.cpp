@@ -257,7 +257,11 @@ void Engine::Render()
     if (mPlayerLive){
         std::string scoreText = "Score: ";
         scoreText.append(std::to_string(mPlayerScore));
-        SDL_RenderDebugText(mRenderer, 0, 0, scoreText.c_str());
+        SDL_RenderDebugText(mRenderer, 10, 10, scoreText.c_str());
+
+        std::string levelText = "Level ";
+        levelText.append(std::to_string(mCurrentLevelNum + 1));
+        SDL_RenderDebugText(mRenderer, mWindowWidth - 100, 10, levelText.c_str());
     }
     else {
         float oldScaleX;
