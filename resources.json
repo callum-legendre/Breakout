@@ -14,9 +14,14 @@
             "textureDimensions" : {"width" : 16, "height" : 16}
         },
         "brick" : {
-            "path" : "resources/sprites/brick.bmp",
+            "path" : "resources/sprites/bricks.bmp",
             "spriteDimensions" : {"width" : 32, "height" : 32},
             "textureDimensions" : {"width" : 96, "height" : 64}
+        },
+        "wall" : {
+            "path" : "resources/sprites/wall.bmp",
+            "spriteDimensions" : {"width" : 32, "height" : 32},
+            "textureDimensions" : {"width" : 32, "height" : 32}
         }
     }
 }
