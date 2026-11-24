@@ -51,6 +51,7 @@ void Engine::Run()
 
         Input();
 
+
         currentTime = SDL_GetTicks();
         accumulatedTime += static_cast<float>(currentTime - previousTime) / 1000; // this converts into seconds from milliseconds
         while (accumulatedTime >= mFixedUpdateTime){
@@ -58,6 +59,7 @@ void Engine::Run()
             accumulatedTime -= mFixedUpdateTime;
         }
         previousTime = currentTime;
+
 
         Render();
     }
@@ -79,22 +81,41 @@ void Engine::Input()
         }
     }
 
-    PlayerInput input;
-    SDL_MouseButtonFlags state = SDL_GetMouseState(&input.mousePos.x, &input.mousePos.y);
-    input.lMouseClick = (state & SDL_BUTTON_LMASK);
+    SDL_MouseButtonFlags state = SDL_GetMouseState(&mInput.mousePos.x, &mInput.mousePos.y);
+    mInput.lMouseClick = (state & SDL_BUTTON_LMASK);
+    mInput.rMouseClick = (state & SDL_BUTTON_RMASK);
 
-    mPaddle->GetComponent<InputComponent>()->SetInput(input);
+    mPaddle->GetComponent<InputComponent>()->SetInput(mInput);
 
     for (auto& ball : mBalls){
         if (ball){
-            ball->GetComponent<InputComponent>()->SetInput(input);
+            ball->GetComponent<InputComponent>()->SetInput(mInput);
         }
     }
 }
 
 void Engine::Update()
 {
-    // update scripts
+    if (mPlayerLive){
+        UpdateScripts();
+        UpdateColliders();
+        UpdateDestruction();
+        UpdateGameOver();
+    }
+    else {
+        if (mInput.rMouseClick){
+            mPlayerLive = true;
+            mCurrentLevelNum = 0;
+            LoadLevel();
+
+            mBalls.push_back(mObjectFactory->CreateBall(mPaddle.get()));
+            mBallCount++;
+        }
+    }
+}
+
+void Engine::UpdateScripts()
+{
     mPaddle->CallScripts(&Script::Update, mFixedUpdateTime);
     for (const auto& ball : mBalls){
         if (ball){
@@ -105,8 +126,10 @@ void Engine::Update()
             }
         }
     }
+}
 
-    // check for collisions
+void Engine::UpdateColliders()
+{
     for (const auto& ball : mBalls){
 
         if (!ball){
@@ -155,8 +178,11 @@ void Engine::Update()
         paddleCollider->CheckCollision(ballCollider);
         ballCollider->CheckCollision(paddleCollider);
     }
+}
 
-    // destroy objects
+void Engine::UpdateDestruction()
+{
+    // check balls
     for (auto& ball : mBalls){
         if (ball && ball->GetAlive() == false){
             ball.reset();
@@ -165,6 +191,7 @@ void Engine::Update()
 
     }
 
+    // check bricks
     for (auto& row : mCurrentLevelBlocks){
         for (auto& brick : row){
             if (brick && brick->GetAlive() == false){
@@ -172,10 +199,12 @@ void Engine::Update()
             }
         }
     }
+}
 
-    // check if the game should end
+void Engine::UpdateGameOver()
+{
     if (mBallCount == 0){
-        mRunning = false;
+        mPlayerLive = false;
     }
 }
 
@@ -209,7 +238,32 @@ void Engine::Render()
 
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     // 255, 255, 255 sets the color to white
-    SDL_RenderDebugText(mRenderer, 0, 0, "testing 1 2 3"); // temporary for testing
+
+    if (mPlayerLive){
+        std::string scoreText = "Score: ";
+        scoreText.append(std::to_string(mPlayerScore));
+        SDL_RenderDebugText(mRenderer, 0, 0, scoreText.c_str());
+    }
+    else {
+        float oldScaleX;
+        float oldScaleY;
+        SDL_GetRenderScale(mRenderer, &oldScaleX, &oldScaleY);
+
+        float scale = 3;
+        SDL_SetRenderScale(mRenderer, scale, scale);
+
+        SDL_RenderDebugText(mRenderer, 50 / scale, 50 / scale, "GAME OVER");
+        SDL_RenderDebugText(mRenderer, 50 / scale, 100 / scale, "Right Click to restart");
+
+        scale = 2;
+        SDL_SetRenderScale(mRenderer, scale, scale);
+
+        std::string scoreText = "Your score was: ";
+        scoreText.append(std::to_string(mPlayerScore));
+        SDL_RenderDebugText(mRenderer, 50 / scale, 250 / scale, scoreText.c_str());
+
+        SDL_SetRenderScale(mRenderer, oldScaleX, oldScaleY);
+    }
 
     SDL_RenderPresent(mRenderer);
 }

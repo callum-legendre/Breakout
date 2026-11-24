@@ -5,10 +5,10 @@
 #include <iostream>
 #include <memory>
 #include <SDL3/SDL.h>
+#include "playerInput.h"
 
 class ResourceManager;
 class GameObject;
-struct PlayerInput;
 class ObjectFactory;
 
 class Engine
@@ -24,6 +24,10 @@ class Engine
     // -- frame loop functions --
     void Input();
     void Update();
+        void UpdateScripts();
+        void UpdateColliders();
+        void UpdateDestruction();
+        void UpdateGameOver();
     void Render();
 
     // -- sdl referenes --
@@ -48,6 +52,8 @@ class Engine
     std::vector<std::unique_ptr<GameObject>> mBalls;
     size_t mPlayerScore = 0;
     size_t mBallCount = 0;
+    bool mPlayerLive = true;
+    PlayerInput mInput;
 };
 
 #endif
