@@ -106,6 +106,7 @@ void Engine::Update()
         if (mInput.rMouseClick){
             mPlayerLive = true;
             mCurrentLevelNum = 0;
+            mPlayerScore = 0;
             LoadLevel();
 
             mBalls.push_back(mObjectFactory->CreateBall(mPaddle.get()));
