@@ -24,5 +24,9 @@ struct Vector2
     }
 };
 
+float Dot(Vector2 vec1, Vector2 vec2);
+
+Vector2 Distance(Vector2 vec1, Vector2 vec2);
+
 
 #endif
