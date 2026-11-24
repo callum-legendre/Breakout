@@ -18,7 +18,7 @@ void BrickScript::OnCollision(ColliderComponent*, ColliderComponent*)
             mParent->Destroy();
         }
         else {
-            mParent->GetComponent<SpriteComponent>()->ChangeFrame(mHealth);
+            mParent->GetComponent<SpriteComponent>()->ChangeFrame(mHealth-1);
         }
     }
 }

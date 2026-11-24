@@ -66,6 +66,7 @@ std::unique_ptr<GameObject> ObjectFactory::CreateBrick(int brickType, float x, f
 
     if (brickType != -1){
         brick->AddComponent<SpriteComponent>(brick.get(), brickInfo);
+        brick->GetComponent<SpriteComponent>()->ChangeFrame(brickType-1);
     }
     else {
         brick->AddComponent<SpriteComponent>(brick.get(), mResourceManager->GetTexture("wall"));
