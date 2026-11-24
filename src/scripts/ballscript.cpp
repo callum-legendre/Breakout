@@ -18,7 +18,7 @@ void BallScript::Update(float deltaTime)
     if (!mOnPaddle) {
         // handle speed
         if (mTimer >= mSpeedIncreaseInterval){
-            mSpeed++;
+            mSpeed += 0.1f;
             mTimer = 0.0f;
         }
         else {

@@ -20,8 +20,8 @@ class BallScript : public Script
 
     // -- update stuff --
     float mTimer = 0.0f;
-    int mSpeedIncreaseInterval = 10; // this is in seconds
-    int mSpeed = 1; // speed is a sclar multiplier for the just the y value of velocity
+    int mSpeedIncreaseInterval = 20; // this is in seconds
+    float mSpeed = 1; // speed is a sclar multiplier for the just the y value of velocity
     Vector2 mVelocity; // velocity is a vector that is applied to the ball each frame
     bool mOnPaddle = true;
     GameObject* mPaddleReference;
