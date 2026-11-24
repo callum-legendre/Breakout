@@ -1,6 +1,10 @@
 {
     "levels" : {
-        "testlevel" : "resources/levels/testlevel.json"
+        "level1" : "resources/levels/level1.json",
+        "level2" : "resources/levels/level2.json",
+        "level3" : "resources/levels/level3.json",
+        "level4" : "resources/levels/level4.json",
+        "level5" : "resources/levels/level5.json"
     },
     "sprites" : {
         "paddle" : {
