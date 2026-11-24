@@ -50,13 +50,38 @@ void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent*
     SDL_GetRectIntersectionFloat(&thisRect, &otherRect, &intersection);
 
     if (intersection.w > intersection.h){ // if it collided with a horizontal edge, negate the y of velocity
+
+        bool above = false;
+        if (thisRect.y + thisRect.h / 2.0f < otherRect.y + otherRect.h / 2.0f){
+            above = true;
+        }
+
+        if (above){
+            thisRect.y = otherRect.y - thisRect.h;
+        }
+        else {
+            thisRect.y = otherRect.y + otherRect.h;
+        }
+
         mVelocity.y = -mVelocity.y;
-        Vector2 newPos = Vector2(thisRect.x + intersection.w, thisRect.y);
-        mParent->SetPosition(newPos); // move the ball out of the object it is colliding with
     }
     else { // otherwise it collided with the verticle edge, so negate the x
+
+        bool left = false;
+        if (thisRect.x + thisRect.w / 2.0f < otherRect.x + otherRect.w / 2.0f){
+            left = true;
+        }
+
+        if (left){
+            thisRect.x = otherRect.x - thisRect.w;
+        }
+        else {
+            thisRect.x = otherRect.x + otherRect.w;
+        }
+
         mVelocity.x = -mVelocity.x;
-        Vector2 newPos = Vector2(thisRect.x, thisRect.y + intersection.h);
-        mParent->SetPosition(newPos); // move the ball out of the object it is colliding with
     }
+
+    Vector2 newPos = Vector2(thisRect.x, thisRect.y);
+    mParent->SetPosition(newPos); // move the ball out of the object it is colliding with
 }

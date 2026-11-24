@@ -1,3 +1,4 @@
 /Breakout
 *.o
-*.dSYM/
+/Breakout.dSYM
+Breakout.dSYM/Contents/Resources/DWARF/Breakout
