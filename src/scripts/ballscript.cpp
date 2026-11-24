@@ -39,7 +39,7 @@ void BallScript::Update(float deltaTime)
         }
 
         // move the ball
-        mParent->MovePosition(mVelocity * mSpeed * deltaTime);
+        mParent->MovePosition(Vector2(mVelocity.x, mVelocity.y * mSpeed) * deltaTime);
     }
 
     mCollisionHappened = false;
