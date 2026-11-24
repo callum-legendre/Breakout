@@ -15,22 +15,7 @@ void BallScript::Update(float deltaTime)
 {
     mPreviousRect = mParent->GetTransform();
 
-    if (mOnPaddle == true){
-        SDL_FRect paddleTransform = mPaddleReference->GetTransform();
-        SDL_FRect ballTransform = mParent->GetTransform();
-
-        Vector2 centeredBall = Vector2(paddleTransform.x + (paddleTransform.w - ballTransform.w) / 2, paddleTransform.y - ballTransform.h);
-
-        mParent->SetPosition(centeredBall);
-
-        if (mInput.lMouseClick == true){
-            mVelocity = Vector2(100, 100);
-            mOnPaddle = false;
-        }
-
-        mPreviousRect = mParent->GetTransform(); // set the previous rectangle to the current position in order to prevent strange positining issues during this state
-    }
-    else {
+    if (!mOnPaddle) {
         // handle speed
         if (mTimer >= mSpeedIncreaseInterval){
             mSpeed++;
@@ -43,8 +28,6 @@ void BallScript::Update(float deltaTime)
         // move the ball
         mParent->MovePosition(Vector2(mVelocity.x, mVelocity.y * mSpeed) * deltaTime);
     }
-
-    mCollisionHappened = false;
 }
 
 Vector2* BallScript::GetVelocity()
@@ -89,4 +72,25 @@ void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent*
 
     Vector2 newPos = Vector2(thisRect.x, thisRect.y);
     mParent->SetPosition(newPos); // move the ball out of the object it is colliding with
+}
+
+void BallScript::LateUpdate(float)
+{
+    mCollisionHappened = false;
+
+    if (mOnPaddle){
+        SDL_FRect paddleTransform = mPaddleReference->GetTransform();
+        SDL_FRect ballTransform = mParent->GetTransform();
+
+        Vector2 centeredBall = Vector2(paddleTransform.x + (paddleTransform.w - ballTransform.w) / 2, paddleTransform.y - ballTransform.h);
+
+        mParent->SetPosition(centeredBall);
+
+        if (mInput.lMouseClick == true){
+            mVelocity = Vector2(100, -100);
+            mOnPaddle = false;
+        }
+
+        mPreviousRect = mParent->GetTransform(); // set the previous rectangle to the current position in order to prevent strange positining issues during this state
+    }
 }

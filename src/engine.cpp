@@ -99,6 +99,7 @@ void Engine::Update()
     if (mPlayerLive){
         UpdateScripts();
         UpdateColliders();
+        LateUpdateScripts();
         UpdateDestruction();
         UpdateGameState();
     }
@@ -179,7 +180,28 @@ void Engine::UpdateColliders()
         // check collision with the paddle
         ColliderComponent* paddleCollider = mPaddle->GetComponent<ColliderComponent>();
         paddleCollider->CheckCollision(ballCollider);
-        ballCollider->CheckCollision(paddleCollider);
+        ballCollider->CheckCollision(paddleCollider);   
+    }
+
+    for (const auto& brick : mCurrentLevelBlocks.back()){
+        if (brick){
+            ColliderComponent* paddleCollider = mPaddle->GetComponent<ColliderComponent>();
+            paddleCollider->CheckCollision(brick->GetComponent<ColliderComponent>());
+        }
+    }
+}
+
+void Engine::LateUpdateScripts()
+{
+    mPaddle->CallScripts(&Script::LateUpdate, mFixedUpdateTime);
+    for (const auto& ball : mBalls){
+        if (ball){
+            ball->CallScripts(&Script::LateUpdate, mFixedUpdateTime);
+
+            if (ball->GetPosition().y > mWindowHeight){
+                ball->Destroy();
+            }
+        }
     }
 }
 

@@ -14,6 +14,7 @@ class Script
     virtual void OnCollision(ColliderComponent*, ColliderComponent*) {};
     virtual void Update(float) {};
     virtual void StoreInput(PlayerInput input) {mInput = input;} // was unsure about making this virtual or not, but i figure i may want to override this, so why not
+    virtual void LateUpdate(float) {} // late update runs after colliders and physics
 
     protected:
     GameObject* mParent;

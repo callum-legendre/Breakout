@@ -26,6 +26,7 @@ class Engine
     void Update();
         void UpdateScripts();
         void UpdateColliders();
+        void LateUpdateScripts();
         void UpdateDestruction();
         void UpdateGameState();
     void Render();

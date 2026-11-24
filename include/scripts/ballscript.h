@@ -13,6 +13,7 @@ class BallScript : public Script
     BallScript(GameObject* parent, GameObject* paddle);
     void Update(float deltaTime) override;
     void OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider) override;
+    void LateUpdate(float) override;
     Vector2* GetVelocity();
 
     private:
