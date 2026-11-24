@@ -40,6 +40,7 @@ void BallScript::Update(float deltaTime)
         mParent->MovePosition(mVelocity * mSpeed * deltaTime);
     }
 
+    mCollisionHappened = false;
 }
 
 void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider)
@@ -48,6 +49,13 @@ void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent*
     SDL_FRect thisRect = thisCollider->GetColliderRect();
     SDL_FRect otherRect = otherCollider->GetColliderRect();
     SDL_GetRectIntersectionFloat(&thisRect, &otherRect, &intersection);
+
+    if (mCollisionHappened){
+        return;
+    }
+    else {
+        mCollisionHappened = true;
+    }
 
     if (intersection.w > intersection.h){ // if it collided with a horizontal edge, negate the y of velocity
 

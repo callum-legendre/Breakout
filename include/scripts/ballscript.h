@@ -18,6 +18,7 @@ class BallScript : public Script
     Vector2 mVelocity; // velocity is a vector that is applied to the ball each frame
     bool mOnPaddle = true;
     GameObject* mPaddleReference;
+    bool mCollisionHappened = false;
 };
 
 #endif
