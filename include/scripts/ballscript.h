@@ -4,12 +4,16 @@
 #include "script.h"
 #include "vector2.h"
 
+#include <vector>
+#include <SDL3/SDL.h>
+
 class BallScript : public Script
 {
     public:
     BallScript(GameObject* parent, GameObject* paddle);
     void Update(float deltaTime) override;
     void OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider) override;
+    Vector2* GetVelocity();
 
     private:
     float mTimer = 0.0f;

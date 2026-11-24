@@ -22,7 +22,7 @@ void BallScript::Update(float deltaTime)
         mParent->SetPosition(centeredBall);
 
         if (mInput.lMouseClick == true){
-            mVelocity = Vector2(500, 100);
+            mVelocity = Vector2(100, 100);
             mOnPaddle = false;
         }
     }
@@ -43,6 +43,11 @@ void BallScript::Update(float deltaTime)
     mCollisionHappened = false;
 }
 
+Vector2* BallScript::GetVelocity()
+{
+   return &mVelocity;
+}
+
 void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent* otherCollider)
 {
     SDL_FRect intersection;
@@ -50,7 +55,7 @@ void BallScript::OnCollision(ColliderComponent* thisCollider, ColliderComponent*
     SDL_FRect otherRect = otherCollider->GetColliderRect();
     SDL_GetRectIntersectionFloat(&thisRect, &otherRect, &intersection);
 
-    if (mCollisionHappened){
+    if (mCollisionHappened && ){
         return;
     }
     else {
