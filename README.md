@@ -13,6 +13,17 @@ When the ball is attached to the paddle in the beggining of a level, left click 
 
 On the game over screen, the player can right click to start a new game. Alternatively, the game can be closed at any time by closing the window.
 
+## Future plans
+There are a few mechanics that I wanted to introduce that I did not have time to. I wanted to have sound effects play when certian events occured (like when a ball hits or destroys a brick) but I ran out of time to do that. I may come back later and impliment it for fun.
+
+Additionally, I wanted to introduce a power up system. My idea was to have some bricks spawn in with a "power up" which, when the tile they were attached to was broken, would spawn an orb that moved at a fixed place towards the bottom of the window. If the power up orb was "collected" by the player (by the paddle moving into the orb) the orb would grant its effect. 
+
+A few ideas for power ups that I had were as follows:
+- Extra ball: would spawn in another ball (the game only ends if both go offscreen).
+- Extra power: the ball deals 2 damage to bricks rather than one
+- Extra points: would give a fixed increase in points (for example, 50)
+- Extra life: would give the player an extra life instead of the game restarting.
+
 ## Libraries Used
 - SDL3
 - nlohmann-json
