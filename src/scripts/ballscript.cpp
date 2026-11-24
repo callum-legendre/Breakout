@@ -27,6 +27,8 @@ void BallScript::Update(float deltaTime)
             mVelocity = Vector2(100, 100);
             mOnPaddle = false;
         }
+
+        mPreviousRect = mParent->GetTransform(); // set the previous rectangle to the current position in order to prevent strange positining issues during this state
     }
     else {
         // handle speed

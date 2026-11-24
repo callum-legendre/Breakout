@@ -19,7 +19,8 @@ std::unique_ptr<GameObject> ObjectFactory::CreateBall(GameObject* paddle)
 {
     SpriteInfo ballInfo = mResourceManager->GetTexture("ball");
 
-    std::unique_ptr<GameObject> ball = std::make_unique<GameObject>(0, 0, ballInfo.spriteWidth, ballInfo.spriteHeight, "ball"); // dimensions of the ball are 16x16, location is 0,0 because unknown
+    SDL_FRect paddleRect = paddle->GetTransform();
+    std::unique_ptr<GameObject> ball = std::make_unique<GameObject>(paddleRect.x + (paddleRect.w / 2), paddleRect.y - ballInfo.spriteHeight, ballInfo.spriteWidth, ballInfo.spriteHeight, "ball"); // dimensions of the ball are 16x16, location is 0,0 because unknown
 
     ball->AddComponent<ColliderComponent>(ball.get());
 
