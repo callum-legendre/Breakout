@@ -87,10 +87,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)out\vs\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)out\vs\obj\$(Platform)\$(Configuration)\</IntDir>
+    <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)out\vs\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)out\vs\obj\$(Platform)\$(Configuration)\</IntDir>
+    <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -145,13 +147,13 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)vendor\SDL\lib\x64\SDL3.dll" "$(OutDir)SDL3.dll"
+      <Command>copy /Y "$(ProjectDir)vendor\SDL3\lib\x64\SDL3.dll" "$(OutDir)SDL3.dll"
 if errorlevel 1 exit /b 1
 
 copy /Y "$(ProjectDir)resources.json" "$(OutDir)resources.json"
 if errorlevel 1 exit /b 1
 
-xcopy /Y $(ProjectDir)resources" "$(OutDir)resources\" /E /I /Y
+xcopy "$(ProjectDir)resources" "$(OutDir)resources\" /E /I /Y
 if errorlevel 1 exit /b 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -176,13 +178,13 @@ if errorlevel 1 exit /b 1</Command>
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)vendor\SDL\lib\x64\SDL3.dll" "$(OutDir)SDL3.dll"
+      <Command>copy /Y "$(ProjectDir)vendor\SDL3\lib\x64\SDL3.dll" "$(OutDir)SDL3.dll"
 if errorlevel 1 exit /b 1
 
 copy /Y "$(ProjectDir)resources.json" "$(OutDir)resources.json"
 if errorlevel 1 exit /b 1
 
-xcopy /Y $(ProjectDir)resources" "$(OutDir)resources\" /E /I /Y
+xcopy "$(ProjectDir)resources" "$(OutDir)resources\" /E /I /Y
 if errorlevel 1 exit /b 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

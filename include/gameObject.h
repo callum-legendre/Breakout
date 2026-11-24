@@ -9,6 +9,8 @@ class Script;
 #include <typeindex>
 #include <memory>
 #include <functional>
+#include <string>
+#include <utility>
 #include <SDL3/SDL.h>
 
 class GameObject
